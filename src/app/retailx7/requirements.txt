@@ -10,3 +10,4 @@ requests==2.25.1
 mistralai
 pandas
 apify-client
+matplotlib
