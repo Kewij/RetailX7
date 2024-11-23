@@ -21,12 +21,10 @@
             </div>
         </div>
 
-        <form method="POST" enctype="multipart/form-data" id="upload-form">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="image" id="image-input" style="display: none;" onchange="this.form.submit()">
-            <button type="button" id="upload-button" onclick="document.getElementById('image-input').click();">
-                📤 Upload Image
-            </button>
+            <input type="file" name="image">
+            <button type="submit">Upload</button>
         </form>
 
         <h3>Vos Suggestions</h3>
