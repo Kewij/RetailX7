@@ -35,8 +35,7 @@ class Image(models.Model):
 
 class ChatbotConversation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    message = models.TextField()
-    response = models.TextField()
+    message = models.JSONField(default=list) 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

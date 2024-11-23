@@ -1,4 +1,5 @@
 from .models import Image
+from .models import ChatbotConversation
 
 def user_images(request):
     if request.user.is_authenticated:
@@ -7,3 +8,19 @@ def user_images(request):
     else:
         images = []
     return {'images': images}
+
+def chatbot_context(request):
+    # Récupérer les dernières conversations du chatbot pour l'utilisateur connecté
+    if request.user.is_authenticated:
+        chatbot, created = ChatbotConversation.objects.get_or_create(user=request.user)
+        print(chatbot)
+        
+        context = {
+            'chatbot': chatbot,
+        }
+    else:
+        context = {
+            'chatbot': None,
+        }
+    return context
+    

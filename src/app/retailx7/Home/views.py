@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .models import ChatbotConversation
 
 # Vue de login
 def user_login(request):
@@ -42,14 +43,27 @@ def home(request):
 
 
 @csrf_exempt  # Ajoutez cette décorateur si vous avez des problèmes avec le CSRF pour les requêtes AJAX
+@login_required
 def chatbot_response(request):
+    # Récupérer ou créer une conversation pour l'utilisateur connecté
+    conversation, created = ChatbotConversation.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
         user_message = request.POST.get('message')
-        
-        # Traitez la logique de génération de réponse ici
-        response_message = f"Vous avez dit: {user_message}"
+        if user_message:
+            # Ajouter le message de l'utilisateur au champ message de la conversation
+            conversation.message.append({'role': 'user', 'content': user_message})
 
-        # Vous pouvez également ajouter la logique de votre chatbot ici
-        # Par exemple, intégrer un modèle de chatbot ou utiliser une API externe
-        
-        return JsonResponse({'response': response_message})
+            # Exemple de réponse du chatbot
+            chatbot_response = "Réponse automatique du chatbot."
+            conversation.message.append({'role': 'assistant', 'content': chatbot_response})
+
+            # Sauvegarder la conversation
+            conversation.save()
+
+            # Retourner la réponse du chatbot en JSON
+            return JsonResponse({'response': chatbot_response})
+
+    # Récupérer les messages précédents pour l'affichage
+    messages = conversation.message
+    return render(request, 'chatbot.html', {'chatbot': messages})
