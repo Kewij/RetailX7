@@ -117,12 +117,13 @@ def create_first_message(outfit):
         - relevant details
     """
 
-def pipeline_chatbot(prompt, messages=[]):
+def pipeline_chatbot(user_input, messages=[]):
     # Met le prompt dans le LLM
-    messages.append({"role":"user", "content":prompt})
+    # messages.append({"role":"user", "content":prompt})
+    prompt = make_prompt(user_input)
     chat_response = client.chat.complete(
         model=model,
-        messages=[messages[-1]]
+        messages=[{"role":"user", "content":prompt}]
     )
     # Récupère et process les outfits donnés par le LLM
     queries = chat_response.choices[0].message.content
@@ -135,6 +136,8 @@ def pipeline_chatbot(prompt, messages=[]):
         model = model,
         messages = messages
     )
+    messages.pop()
+    messages.append({"role": "user", "content": user_input})
     messages.append({"role": "assistant", "content": chat_response.choices[0].message.content})
     
     return messages
@@ -142,8 +145,7 @@ def pipeline_chatbot(prompt, messages=[]):
 def query_chat(new_query, messages=[]):
     bool_reco = is_recommandation(new_query)
     if bool_reco == "True":
-        prompt = make_prompt(new_query)
-        messages = pipeline_chatbot(prompt, messages)
+        messages = pipeline_chatbot(new_query, messages)
     else:
         messages.append({"role": "user", "content": new_query})
         response = client.chat.complete(
