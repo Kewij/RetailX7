@@ -3,6 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser, Image, ChatbotConversation
 import json
 
+from django.utils.safestring import mark_safe
+
 # Custom admin for CustomUser
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
@@ -25,28 +27,33 @@ class ImageAdmin(admin.ModelAdmin):
     def short_description(self, obj):
         """Provide a truncated version of the description for the list display."""
         if isinstance(obj.description, dict):
-            # Handle if description is stored as JSON
-            description_text = json.dumps(obj.description)
+            description_text = json.dumps(obj.description)  # Handle if description is JSON
         else:
             description_text = obj.description
         return (description_text[:50] + "...") if description_text else "-"
     short_description.short_description = "Description (Short)"  # Rename column
 
     def formatted_description(self, obj):
-        """Show the description as a formatted JSON string in the admin detail view."""
-        if isinstance(obj.description, dict):
-            # Format JSON nicely if stored as a dictionary
-            return json.dumps(obj.description, indent=4)
-        return obj.description or "-"
+        """Show the description as pretty-formatted JSON in the admin detail view."""
+        if obj.description:
+            try:
+                # Parse and pretty-print JSON
+                parsed_json = json.loads(obj.description) if isinstance(obj.description, str) else obj.description
+                pretty_json = json.dumps(parsed_json, indent=4, ensure_ascii=False)
+                # Wrap in a preformatted block for better readability
+                return mark_safe(f'<pre style="background: #f6f8fa; padding: 10px; border-radius: 5px;">{pretty_json}</pre>')
+            except (TypeError, ValueError):
+                # If it's not JSON, display as plain text
+                return obj.description
+        return "-"
     formatted_description.short_description = "Description (Formatted)"  # Rename in admin detail view
 
     def image_preview(self, obj):
         """Render a small preview of the uploaded image."""
         if obj.image:
-            return f'<img src="{obj.image.url}" style="width: 75px; height: 75px;" />'
+            return mark_safe(f'<img src="{obj.image.url}" style="width: 75px; height: 75px;" />')
         return "-"
     image_preview.short_description = "Image Preview"  # Rename column
-    image_preview.allow_tags = True  # Allow HTML rendering
 
 # Custom admin for ChatbotConversation
 @admin.register(ChatbotConversation)
