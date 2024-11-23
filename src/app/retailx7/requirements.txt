@@ -9,3 +9,4 @@ Pillow==9.3.0
 requests==2.25.1
 mistralai
 pandas
+apify-client
