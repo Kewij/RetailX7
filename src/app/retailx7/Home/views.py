@@ -44,7 +44,7 @@ def home(request):
 
 @csrf_exempt  # Ajoutez cette décorateur si vous avez des problèmes avec le CSRF pour les requêtes AJAX
 @login_required
-def chatbot(request):
+def chatbot_response(request):
     # Récupérer ou créer une conversation pour l'utilisateur connecté
     conversation, created = ChatbotConversation.objects.get_or_create(user=request.user)
 
