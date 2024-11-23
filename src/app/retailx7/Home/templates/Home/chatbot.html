@@ -26,6 +26,13 @@
     {% endif %}
     
     <script>
+        document.getElementById('user-input').addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && !event.shiftKey) { // Check if "Enter" is pressed without "Shift"
+                event.preventDefault(); // Prevent default behavior of adding a new line
+                document.getElementById('send-button').click(); // Trigger the button click event
+            }
+        });
+        
         // Fonction pour obtenir le CSRF token depuis le meta tag
         function getCSRFToken() {
             return document.querySelector('meta[name="csrf-token"]').getAttribute('content');

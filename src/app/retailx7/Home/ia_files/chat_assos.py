@@ -127,10 +127,12 @@ def pipeline_chatbot(user_input, messages=[]):
     )
     # Récupère et process les outfits donnés par le LLM
     queries = chat_response.choices[0].message.content
+    print(queries)
     outfit = scrap_asos_outfit(queries, maxItems=1)
     outfit = {query: [{k: v for k, v in item.items() if k != "image"} for item in clothe] for query, clothe in outfit.items()}
     # Créé et envoie un message à envoyer au user
     message_outfit = create_first_message(json.dumps(outfit, indent=4))
+    print(message_outfit)
     messages.append({"role":"system", "content":message_outfit})
     chat_response = client.chat.complete(
         model = model,
