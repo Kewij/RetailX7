@@ -1,0 +1,56 @@
+<!-- chatbot.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="{% static 'Home/css/chatbox.css' %}">
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chat-box">
+        <!-- Les messages apparaîtront ici -->
+    </div>
+    <textarea id="user-input" placeholder="Tapez votre message..."></textarea>
+    <button id="send-button">Envoyer</button>
+
+    <script>
+        document.getElementById('send-button').addEventListener('click', function() {
+            var userInput = document.getElementById('user-input').value;
+            if (!userInput.trim()) {
+                alert("Veuillez entrer un message.");
+                return;
+            }
+            
+            // Afficher le message de l'utilisateur dans le chat
+            var chatBox = document.getElementById('chat-box');
+            var userMessage = document.createElement('div');
+            userMessage.classList.add('user-message');
+            userMessage.textContent = userInput;
+            chatBox.appendChild(userMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;  // Défilement vers le bas
+
+            // Vider le champ de saisie
+            document.getElementById('user-input').value = '';
+
+            // Envoi de la requête AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/chatbot-response/', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText).response;
+                    // Afficher la réponse du chatbot
+                    var botResponse = document.createElement('div');
+                    botResponse.classList.add('bot-response');
+                    botResponse.textContent = response;
+                    chatBox.appendChild(botResponse);
+                    chatBox.scrollTop = chatBox.scrollHeight;  // Défilement vers le bas
+                }
+            };
+            xhr.send('message=' + encodeURIComponent(userInput));
+        });
+    </script>
+</body>
+</html>
