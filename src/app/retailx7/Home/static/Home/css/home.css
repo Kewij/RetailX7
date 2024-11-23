@@ -72,19 +72,37 @@ body {
     color: #555;
 }
 
-/* Optional: Style the horizontal scrollbar */
+#image-gallery {
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap;
+    padding: 10px 0;
+    margin: 10px 0;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    scrollbar-width: thin; /* For modern browsers */
+    cursor: grab; /* Add a grabbing cursor */
+}
+
+#image-gallery:active {
+    cursor: grabbing; /* Change cursor on click/drag */
+}
+
+/* Optional scrollbar styling for webkit browsers */
 #image-gallery::-webkit-scrollbar {
-    height: 8px; /* Height of the scrollbar */
+    height: 8px;
 }
 
 #image-gallery::-webkit-scrollbar-thumb {
-    background-color: #ccc; /* Thumb (scroll handle) color */
-    border-radius: 4px; /* Rounded edges for the scrollbar thumb */
+    background-color: #ccc;
+    border-radius: 4px;
 }
 
 #image-gallery::-webkit-scrollbar-track {
-    background-color: #f8f9fa; /* Track (scrollbar background) color */
+    background-color: #f8f9fa;
 }
+
 
 
 
