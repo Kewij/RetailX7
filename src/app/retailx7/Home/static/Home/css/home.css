@@ -5,7 +5,6 @@ body {
     margin: 0;
     padding: 0;
 }
-
 #left-panel {
     width: 30%;
     background-color: #f8f9fa;
@@ -34,31 +33,36 @@ body {
     margin-bottom: 15px;
 }
 
+/* Ensure the image gallery is horizontally scrollable */
 #image-gallery {
-    overflow-x: auto;
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
     white-space: nowrap;
     padding: 10px 0;
     margin: 10px 0;
     background-color: #f8f9fa;
     border: 1px solid #ddd;
     border-radius: 5px;
+    scrollbar-width: thin; /* Customize the scrollbar for modern browsers */
 }
 
+/* Styling for the container of the images */
 .image-container {
-    display: flex;
-    gap: 10px; /* Space between images */
+    display: flex; /* Flex layout to align images in a row */
+    gap: 15px; /* Space between images */
 }
 
+/* Ensure each image has a consistent size */
 .image-item {
-    display: inline-block;
+    flex: none; /* Prevent images from shrinking or stretching */
     text-align: center;
     width: 120px;
 }
 
 .image-item img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
+    width: 120px; /* Set consistent width */
+    height: 120px; /* Set consistent height */
+    object-fit: cover; /* Crop the image to fit the box without distortion */
     border-radius: 5px;
 }
 
@@ -67,6 +71,21 @@ body {
     margin-top: 5px;
     color: #555;
 }
+
+/* Optional: Style the horizontal scrollbar */
+#image-gallery::-webkit-scrollbar {
+    height: 8px; /* Height of the scrollbar */
+}
+
+#image-gallery::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Thumb (scroll handle) color */
+    border-radius: 4px; /* Rounded edges for the scrollbar thumb */
+}
+
+#image-gallery::-webkit-scrollbar-track {
+    background-color: #f8f9fa; /* Track (scrollbar background) color */
+}
+
 
 
 #right-panel {
