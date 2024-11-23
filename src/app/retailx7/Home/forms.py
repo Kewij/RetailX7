@@ -12,5 +12,5 @@ class LoginForm(AuthenticationForm):
 class ImageUploadForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ['image', 'description']
+        fields = ['image']
 

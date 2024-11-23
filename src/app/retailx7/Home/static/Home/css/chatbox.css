@@ -1,25 +1,17 @@
-/* static/Home/css/style.css */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-}
-
-#chat-box {
-    max-width: 600px;
-    margin: 0 auto;
-    border: 1px solid #ccc;
-    padding: 20px;
-    height: 400px;
-    overflow-y: auto;
-}
-
-textarea {
-    width: 100%;
-    height: 50px;
-}
-
-button {
+/* chatbox.css */
+.user-message, .assistant-message {
+    margin: 5px 0;
     padding: 10px;
-    margin-top: 10px;
-    cursor: pointer;
+    border-radius: 5px;
+    max-width: 60%;
+}
+
+.user-message {
+    background-color: #e9ecef;
+    align-self: flex-end;
+}
+
+.assistant-message {
+    background-color: #d1ecf1;
+    align-self: flex-start;
 }

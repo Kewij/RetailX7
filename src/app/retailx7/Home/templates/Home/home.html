@@ -5,30 +5,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
-    <link rel="stylesheet" href="{% static 'Home/css/chatbox.css' %}">
+    <link rel="stylesheet" href="{% static 'Home/css/home.css' %}">
 </head>
 <body>
-    <h2>Bienvenue, {{ user.username }}!</h2>
+    <div id="left-panel">
+        <h2>Bienvenue, {{ user.username }}!</h2>
+        <h3>Vos Images</h3>
+        <div id="image-gallery">
+            <div class="image-container">
+                {% for image in images %}
+                <div class="image-item">
+                    <img src="{{ image.image.url }}" alt="{{ image.description }}">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
 
-    <h3>Upload d'image</h3>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" name="upload_image">Télécharger l'image</button>
-    </form>
+        <form method="POST" enctype="multipart/form-data" id="upload-form">
+            {% csrf_token %}
+            <input type="file" name="image" id="image-input" style="display: none;" onchange="document.getElementById('upload-form').submit()">
+            <button type="button" id="upload-button" onclick="document.getElementById('image-input').click();">
+                📤 Upload Image
+            </button>
+        </form>
 
-    <h3>Vos images</h3>
-    <ul>
-        {% for image in images %}
-        <li>
-            <img src="{{ image.image.url }}" alt="{{ image.description }}" width="100">
-            <p>{{ image.description }}</p>
-        </li>
-        {% endfor %}
-    </ul>
-
-    <a href="{% url 'logout' %}">Se déconnecter</a>
-
-    {% include 'Home/chatbot.html' %}
+        <h3>Vos Suggestions</h3>
+        <div id="image-gallery">
+            <div class="image-container">
+                {% for image in suggestions %}
+                <div class="image-item">
+                    <img src="{{ image.image.url }}" alt="{{ image.description }}">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="right-panel">
+        {% include 'Home/chatbot.html' %}
+    </div>
 </body>
 </html>

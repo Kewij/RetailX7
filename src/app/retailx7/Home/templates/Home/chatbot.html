@@ -3,7 +3,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Chatbot</title>
     <link rel="stylesheet" href="{% static 'Home/css/chatbox.css' %}">
 
     <!-- Inclure le token CSRF dans un meta tag -->
@@ -13,6 +12,12 @@
     {% if chatbot %}
         <h1>Chatbot</h1>
         <div id="chat-box">
+            <!-- Afficher directement les messages du chatbot -->
+            {% for msg in chatbot.message %}
+                <div class="{{ msg.role }}-message">
+                    <strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
+                </div>
+            {% endfor %}
         </div>
 
         <textarea id="user-input" placeholder="Tapez votre message..."></textarea>
@@ -21,7 +26,6 @@
     {% endif %}
     
     <script>
-
         // Fonction pour obtenir le CSRF token depuis le meta tag
         function getCSRFToken() {
             return document.querySelector('meta[name="csrf-token"]').getAttribute('content');

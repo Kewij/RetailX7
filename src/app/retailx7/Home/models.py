@@ -27,7 +27,7 @@ class Image(models.Model):
         related_name='user_images'  # Ce related_name permet d'accéder aux images via user.user_images.all()
     )
     image = models.ImageField(upload_to='user_images/')
-    description = models.TextField(blank=True)
+    description = models.JSONField(blank=True)
 
     def __str__(self):
         return f"Image {self.id} de {self.user.username}"

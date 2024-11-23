@@ -8,6 +8,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import ChatbotConversation
 
+import base64, json
+
+from .ia_files.pixtral_script import list_clothes
+
 # Vue de login
 def user_login(request):
     if request.method == 'POST':
@@ -28,18 +32,25 @@ def user_logout(request):
 # Page d'accueil
 @login_required
 def home(request):
-    # Formulaire d'upload d'image
-    if request.method == 'POST' and 'upload_image' in request.POST:
+    if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.save(commit=False)
             image.user = request.user
+
+            image_file = request.FILES['image']  # Get the uploaded image from the form
+            image_bytes = image_file.read()  # Read the file as bytes
+            image_base64 = base64.b64encode(image_bytes).decode('utf-8')  # Encode to Base64
+            image.description = json.loads(list_clothes(image_base64))
+
+
+
             image.save()
             return redirect('home')
     else:
         form = ImageUploadForm()
     
-    return render(request, 'Home/home.html', {'form': form})
+    return render(request, 'Home/home.html', {'form': form, "suggestions":[]})
 
 
 @csrf_exempt  # Ajoutez cette décorateur si vous avez des problèmes avec le CSRF pour les requêtes AJAX
