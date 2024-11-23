@@ -21,8 +21,6 @@
     {% endif %}
     
     <script>
-        var messages = JSON.parse({{ chatbot.message |json_script:"chatbot-messages"}});
-        displayMessages(messages);
 
         // Fonction pour obtenir le CSRF token depuis le meta tag
         function getCSRFToken() {
