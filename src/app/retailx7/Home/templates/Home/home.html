@@ -20,6 +20,17 @@
                 {% endfor %}
             </div>
         </div>
+
+        <h3>Vos Suggestions</h3>
+        <div id="image-gallery">
+            <div class="image-container">
+                {% for image in suggestions %}
+                <div class="image-item">
+                    <img src="{{ image.image.url }}" alt="{{ image.description }}">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     <div id="right-panel">
         {% include 'Home/chatbot.html' %}

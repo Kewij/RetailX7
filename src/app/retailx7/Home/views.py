@@ -39,7 +39,7 @@ def home(request):
     else:
         form = ImageUploadForm()
     
-    return render(request, 'Home/home.html', {'form': form})
+    return render(request, 'Home/home.html', {'form': form, "suggestions":[]})
 
 
 @csrf_exempt  # Ajoutez cette décorateur si vous avez des problèmes avec le CSRF pour les requêtes AJAX
