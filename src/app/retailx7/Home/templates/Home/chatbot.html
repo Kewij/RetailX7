@@ -13,10 +13,12 @@
     {% if chatbot %}
         <h1>Chatbot</h1>
         <div id="chat-box">
-            <!-- Les messages apparaîtront ici -->
+            <script id="chatbot-messages" type="application/json">
+                {{ chatbot.message|json_script:"chatbot-messages" }}
+            </script>
             <script>
-                // Afficher les messages récupérés au chargement
-                var chatbotMessages = {{ chatbot.message|json_script:"chatbot-messages" }};
+                // Charger les messages depuis le bloc script
+                var chatbotMessages = JSON.parse(document.getElementById('chatbot-messages').textContent);
                 displayMessages(chatbotMessages);
             </script>
         </div>
