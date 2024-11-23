@@ -64,7 +64,7 @@ def chatbot_response(request):
             conversation.save()
 
             # Retourner la réponse du chatbot en JSON
-            return JsonResponse(conversation.message)
+            return JsonResponse(conversation.message, safe=False)
 
     # Récupérer les messages précédents pour l'affichage
     messages = conversation.message
