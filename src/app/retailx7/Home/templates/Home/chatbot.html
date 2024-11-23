@@ -16,7 +16,8 @@
             <!-- Les messages apparaîtront ici -->
             <script>
                 // Afficher les messages récupérés au chargement
-                displayMessages({{ chatbot.message}});
+                var chatbotMessages = {{ chatbot.message|json_script:"chatbot-messages" }};
+                displayMessages(chatbotMessages);
             </script>
         </div>
 
