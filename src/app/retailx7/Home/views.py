@@ -4,6 +4,9 @@ from .forms import LoginForm, ImageUploadForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 # Vue de login
 def user_login(request):
     if request.method == 'POST':
@@ -36,3 +39,17 @@ def home(request):
         form = ImageUploadForm()
     
     return render(request, 'Home/home.html', {'form': form})
+
+
+@csrf_exempt  # Ajoutez cette décorateur si vous avez des problèmes avec le CSRF pour les requêtes AJAX
+def chatbot_response(request):
+    if request.method == 'POST':
+        user_message = request.POST.get('message')
+        
+        # Traitez la logique de génération de réponse ici
+        response_message = f"Vous avez dit: {user_message}"
+
+        # Vous pouvez également ajouter la logique de votre chatbot ici
+        # Par exemple, intégrer un modèle de chatbot ou utiliser une API externe
+        
+        return JsonResponse({'response': response_message})

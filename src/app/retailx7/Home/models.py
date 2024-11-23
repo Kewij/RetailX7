@@ -31,4 +31,14 @@ class Image(models.Model):
 
     def __str__(self):
         return f"Image {self.id} de {self.user.username}"
+    
+
+class ChatbotConversation(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField()
+    response = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Conversation with {self.user.username} at {self.created_at}"
 

@@ -1,0 +1,76 @@
+<!-- chatbot.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <style>
+        #chat-box {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+        }
+        .user-message {
+            text-align: right;
+            background-color: #f1f1f1;
+            padding: 5px;
+            margin: 5px 0;
+        }
+        .bot-response {
+            text-align: left;
+            background-color: #e0f7fa;
+            padding: 5px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chat-box">
+        <!-- Les messages apparaîtront ici -->
+    </div>
+    <textarea id="user-input" placeholder="Tapez votre message..."></textarea>
+    <button id="send-button">Envoyer</button>
+
+    <script>
+        document.getElementById('send-button').addEventListener('click', function() {
+            var userInput = document.getElementById('user-input').value;
+            if (!userInput.trim()) {
+                alert("Veuillez entrer un message.");
+                return;
+            }
+            
+            // Afficher le message de l'utilisateur dans le chat
+            var chatBox = document.getElementById('chat-box');
+            var userMessage = document.createElement('div');
+            userMessage.classList.add('user-message');
+            userMessage.textContent = userInput;
+            chatBox.appendChild(userMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;  // Défilement vers le bas
+
+            // Vider le champ de saisie
+            document.getElementById('user-input').value = '';
+
+            // Envoi de la requête AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/chatbot-response/', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText).response;
+                    // Afficher la réponse du chatbot
+                    var botResponse = document.createElement('div');
+                    botResponse.classList.add('bot-response');
+                    botResponse.textContent = response;
+                    chatBox.appendChild(botResponse);
+                    chatBox.scrollTop = chatBox.scrollHeight;  // Défilement vers le bas
+                }
+            };
+            xhr.send('message=' + encodeURIComponent(userInput));
+        });
+    </script>
+</body>
+</html>
