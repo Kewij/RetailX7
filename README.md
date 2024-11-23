@@ -10,4 +10,5 @@ L'application doit avoir les fonctionalités suivantes :
 
 ## Disclaimer
 
-- Changer de clé pour ASSOS
+- Changer de clé pour ASOS
+- Pas pratique en terme de temps de calcul pour l'API ASOS (~2mn) --> recherche internet + parse ?
