@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$rt00p%-4yo0-04#z=7!yat2h!^jt#2@&^ns1mk&)dohz5=2!o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["devops.tlapp.net"]
 
 
 # Application definition
@@ -122,3 +122,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Pour gérer les fichiers téléchargés
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
