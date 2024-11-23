@@ -11,14 +11,16 @@
     <div id="left-panel">
         <h2>Bienvenue, {{ user.username }}!</h2>
         <h3>Vos Images</h3>
-        <ul>
-            {% for image in images %}
-            <li>
-                <img src="{{ image.image.url }}" alt="{{ image.description }}">
-                <p>{{ image.description }}</p>
-            </li>
-            {% endfor %}
-        </ul>
+        <div id="image-gallery">
+            <div class="image-container">
+                {% for image in images %}
+                <div class="image-item">
+                    <img src="{{ image.image.url }}" alt="{{ image.description }}">
+                    <p>{{ image.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
     <div id="right-panel">
         {% include 'Home/chatbot.html' %}

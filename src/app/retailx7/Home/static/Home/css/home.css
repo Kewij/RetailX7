@@ -34,6 +34,41 @@ body {
     margin-bottom: 15px;
 }
 
+#image-gallery {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 0;
+    margin: 10px 0;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.image-container {
+    display: flex;
+    gap: 10px; /* Space between images */
+}
+
+.image-item {
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+
+.image-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.image-item p {
+    font-size: 12px;
+    margin-top: 5px;
+    color: #555;
+}
+
+
 #right-panel {
     width: 70%;
     padding: 20px;
