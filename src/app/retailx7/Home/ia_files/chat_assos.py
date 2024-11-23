@@ -92,10 +92,10 @@ def scrap_asos(query, maxItems = 3):
 
 def scrap_asos_outfit(queries, maxItems=3):
     queries = ast.literal_eval(queries)
-    outfit = {}
+    outfit = []
     for i, query in enumerate(queries):
         clothe = scrap_asos(query, maxItems)
-        outfit[query] = clothe
+        outfit += clothe
     return outfit
 
 def create_first_message(outfit):
@@ -129,7 +129,6 @@ def pipeline_chatbot(user_input, messages=[]):
     queries = chat_response.choices[0].message.content
     print(queries)
     outfit = scrap_asos_outfit(queries, maxItems=1)
-    outfit = {query: [{k: v for k, v in item.items() if k != "image"} for item in clothe] for query, clothe in outfit.items()}
     # Créé et envoie un message à envoyer au user
     message_outfit = create_first_message(json.dumps(outfit, indent=4))
     print(message_outfit)
@@ -138,9 +137,8 @@ def pipeline_chatbot(user_input, messages=[]):
         model = model,
         messages = messages
     )
-    messages.pop()
     messages.append({"role": "user", "content": user_input})
-    messages.append({"role": "assistant", "content": chat_response.choices[0].message.content, "dict_infos" : {}})
+    messages.append({"role": "assistant", "content": chat_response.choices[0].message.content, "dict_infos" : outfit})
     
     return messages
 
