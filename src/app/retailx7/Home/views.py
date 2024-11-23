@@ -8,6 +8,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import ChatbotConversation
 
+import base64, json
+
+from pixtral import recommend_from_image
+
 # Vue de login
 def user_login(request):
     if request.method == 'POST':
@@ -34,6 +38,14 @@ def home(request):
         if form.is_valid():
             image = form.save(commit=False)
             image.user = request.user
+
+            image_file = request.FILES['image']  # Get the uploaded image from the form
+            image_bytes = image_file.read()  # Read the file as bytes
+            image_base64 = base64.b64encode(image_bytes).decode('utf-8')  # Encode to Base64
+            image.description = json.dumps(recommend_from_image(image_base64))
+
+
+
             image.save()
             return redirect('home')
     else:
