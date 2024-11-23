@@ -13,7 +13,6 @@
     {% if chatbot %}
         <h1>Chatbot</h1>
         <div id="chat-box">
-            <h>{{ chatbot.message}}</h>
         </div>
 
         <textarea id="user-input" placeholder="Tapez votre message..."></textarea>
@@ -22,6 +21,9 @@
     {% endif %}
     
     <script>
+        var messages = JSON.parse({{ chatbot.message}});
+        displayMessages(messages);
+
         // Fonction pour obtenir le CSRF token depuis le meta tag
         function getCSRFToken() {
             return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -49,21 +51,6 @@
         // Fonction pour obtenir le CSRF token depuis le meta tag
         function getCSRFToken() {
             return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        }
-
-        // Fonction pour afficher les messages
-        function displayMessages(messages) {
-            var chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML = '';  // Effacer le chat actuel
-
-            messages.forEach(function(msg) {
-                var messageElement = document.createElement('div');
-                messageElement.classList.add(msg.role + '-message');
-                messageElement.innerHTML = "<strong>" + capitalizeFirstLetter(msg.role) + ":</strong> " + msg.content;
-                chatBox.appendChild(messageElement);
-            });
-
-            chatBox.scrollTop = chatBox.scrollHeight;  // Défilement vers le bas
         }
 
         document.getElementById('send-button').addEventListener('click', function() {
