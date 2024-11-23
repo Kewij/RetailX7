@@ -14,7 +14,7 @@
         <h1>Chatbot</h1>
         <div id="chat-box">
             <!-- Les messages apparaîtront ici -->
-            {% for msg in chatbot %}
+            {% for msg in chatbot.message %}
                 <div class="{{ msg.role }}-message">
                     <strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
                 </div>
