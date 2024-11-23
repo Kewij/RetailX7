@@ -17,11 +17,11 @@
 
         <textarea id="user-input" placeholder="Tapez votre message..."></textarea>
         <button id="send-button">Envoyer</button>
-    
     {% endif %}
     
     <script>
-        var messages = JSON.parse({{ chatbot.message |json_script:"chatbot-messages"}});
+        // Charger les messages initialement depuis le template
+        var messages = JSON.parse(document.getElementById('chatbot-messages').textContent);
         displayMessages(messages);
 
         // Fonction pour obtenir le CSRF token depuis le meta tag
@@ -34,6 +34,7 @@
             var chatBox = document.getElementById('chat-box');
             chatBox.innerHTML = '';  // Effacer le chat actuel
 
+            // Afficher chaque message
             messages.forEach(function(msg) {
                 var messageElement = document.createElement('div');
                 messageElement.classList.add(msg.role + '-message');
@@ -48,11 +49,8 @@
         function capitalizeFirstLetter(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
-        // Fonction pour obtenir le CSRF token depuis le meta tag
-        function getCSRFToken() {
-            return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        }
 
+        // Gestion de l'envoi du message utilisateur
         document.getElementById('send-button').addEventListener('click', function() {
             var userInput = document.getElementById('user-input').value;
             if (!userInput.trim()) {
@@ -79,15 +77,24 @@
 
             xhr.onload = function() {
                 if (xhr.status == 200) {
-                    var messages = JSON.parse(xhr.responseText);
+                    var response = JSON.parse(xhr.responseText);  // La réponse du serveur contenant les messages
+                    var messages = response.messages;  // Récupérer les messages retournés par le serveur
 
                     // Utiliser la fonction displayMessages pour afficher les messages
                     displayMessages(messages);
                 }
             };
 
-            xhr.send('message=' + encodeURIComponent(userInput));  // Envoi du message de l'utilisateur
+            // Envoi du message de l'utilisateur
+            xhr.send('message=' + encodeURIComponent(userInput));  
         });
     </script>
+
+    <!-- Insérer les messages du chatbot dans un script pour les passer au JavaScript -->
+    {% if chatbot %}
+        <script id="chatbot-messages" type="application/json">
+            {{ chatbot.message|json_script:"chatbot-messages" }}
+        </script>
+    {% endif %}
 </body>
 </html>
