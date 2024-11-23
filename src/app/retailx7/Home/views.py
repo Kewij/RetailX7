@@ -51,6 +51,7 @@ def chatbot_response(request):
     if request.method == 'POST':
         user_message = request.POST.get('message')
         if user_message:
+            print("Message reçu: ", user_message) 
             # Ajouter le message de l'utilisateur au champ message de la conversation
             conversation.message.append({'role': 'user', 'content': user_message})
 
