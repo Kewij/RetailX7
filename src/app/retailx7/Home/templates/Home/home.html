@@ -17,7 +17,7 @@
 
     <h3>Vos images</h3>
     <ul>
-        {% for image in user.user_images.all %}
+        {% for image in images %}
         <li>
             <img src="{{ image.image.url }}" alt="{{ image.description }}" width="100">
             <p>{{ image.description }}</p>
