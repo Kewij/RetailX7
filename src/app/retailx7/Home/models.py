@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 class CustomUser(AbstractUser):
     bio = models.TextField(blank=True)  # Champ texte long pour la bio de l'utilisateur
@@ -20,7 +21,10 @@ class CustomUser(AbstractUser):
     )
 
 class Image(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_images')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  # Utilisez AUTH_USER_MODEL pour garantir que l'utilisateur est un CustomUser
+        on_delete=models.CASCADE
+    )
     image = models.ImageField(upload_to='user_images/')  # Téléchargement d'image
     description = models.CharField(max_length=255, blank=True)  # Description de l'image
 
