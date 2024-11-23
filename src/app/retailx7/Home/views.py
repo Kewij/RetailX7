@@ -47,8 +47,9 @@ def home(request):
 def chatbot_response(request):
     # Récupérer ou créer une conversation pour l'utilisateur connecté
     conversation, created = ChatbotConversation.objects.get_or_create(user=request.user)
-
+    print("chatbot")
     if request.method == 'POST':
+        print("post")
         user_message = request.POST.get('message')
         if user_message:
             print("Message reçu: ", user_message) 
