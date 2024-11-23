@@ -59,6 +59,11 @@
             chatBox.innerHTML = '';  // Effacer le chat actuel
 
             messages.forEach(function(msg) {
+                // Skip system messages
+                if (msg.role === 'system') {
+                    return;
+                }
+        
                 var messageElement = document.createElement('div');
                 messageElement.classList.add(msg.role + '-message');
                 messageElement.innerHTML = "<strong>" + capitalizeFirstLetter(msg.role) + ":</strong> " + msg.content;
