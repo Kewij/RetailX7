@@ -11,6 +11,7 @@ from .models import ChatbotConversation
 import base64, json
 
 from .ia_files.pixtral_script import list_clothes
+from .ia_files.chat_assos import query_chat
 
 # Vue de login
 def user_login(request):
@@ -63,13 +64,14 @@ def chatbot_response(request):
         print("post")
         user_message = request.POST.get('message')
         if user_message:
-            print("Message reçu: ", user_message) 
-            # Ajouter le message de l'utilisateur au champ message de la conversation
+            print("Message reçu: ", user_message)
+            conversation.message = query_chat(user_message, conversation.message)
+            """# Ajouter le message de l'utilisateur au champ message de la conversation
             conversation.message.append({'role': 'user', 'content': user_message})
 
             # Exemple de réponse du chatbot
             chatbot_response = "Réponse automatique du chatbot."
-            conversation.message.append({'role': 'assistant', 'content': chatbot_response})
+            conversation.message.append({'role': 'assistant', 'content': chatbot_response})"""
 
             # Sauvegarder la conversation
             conversation.save()
