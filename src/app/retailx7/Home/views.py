@@ -32,11 +32,8 @@ def user_logout(request):
 # Page d'accueil
 @login_required
 def home(request):
-    # Formulaire d'upload d'image
-    print("home")
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
-        print("post")
         if form.is_valid():
             image = form.save(commit=False)
             image.user = request.user
@@ -45,7 +42,6 @@ def home(request):
             image_bytes = image_file.read()  # Read the file as bytes
             image_base64 = base64.b64encode(image_bytes).decode('utf-8')  # Encode to Base64
             image.description = json.dumps(recommend_from_image(image_base64))
-            print(image.description)
 
 
 
