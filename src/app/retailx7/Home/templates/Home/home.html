@@ -23,8 +23,11 @@
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="image">
-            <button type="submit">Upload</button>
+            {{ form.as_p }} <!-- This renders the `ImageUploadForm` fields -->
+            <input type="hidden" name="upload_image" value="true">
+            <button type="submit" id="upload-button">
+                Upload Image
+            </button>
         </form>
 
         <h3>Vos Suggestions</h3>
