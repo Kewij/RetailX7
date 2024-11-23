@@ -33,7 +33,8 @@ def user_logout(request):
 @login_required
 def home(request):
     # Formulaire d'upload d'image
-    if request.method == 'POST' and 'upload_image' in request.POST:
+    print("home")
+    if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         print("post")
         if form.is_valid():
