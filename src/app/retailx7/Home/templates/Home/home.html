@@ -40,7 +40,7 @@
 
         <form method="POST" enctype="multipart/form-data" id="upload-form">
             {% csrf_token %}
-            <input type="file" name="image" id="image-input" style="display: none;" onchange="document.getElementById('upload-form').submit()">
+            <input type="file" name="image" id="id_image" style="display: none;" onchange="document.getElementById('upload-form').submit()">
             <input type="hidden" name="description" value="Default description"> <!-- Add description if needed -->
             <button type="button" id="upload-button" onclick="document.getElementById('image-input').click();">
                 📤 Upload Image
