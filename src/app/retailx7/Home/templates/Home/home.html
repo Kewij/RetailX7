@@ -23,8 +23,9 @@
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="image" id="image-input" style="display: none;" onchange="this.form.submit()">
-            <button type="button" id="upload-button" onclick="document.getElementById('image-input').click();">
+            {{ form.as_p }} <!-- This renders the `ImageUploadForm` fields -->
+            <input type="hidden" name="upload_image" value="true">
+            <button type="submit" id="upload-button">
                 Upload Image
             </button>
         </form>
