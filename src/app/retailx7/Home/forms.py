@@ -14,7 +14,3 @@ class ImageUploadForm(forms.ModelForm):
         model = Image
         fields = ['image']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['description'].required = False 
-
