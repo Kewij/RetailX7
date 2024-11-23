@@ -11,3 +11,4 @@ mistralai
 pandas
 apify-client
 matplotlib
+scikit-image
