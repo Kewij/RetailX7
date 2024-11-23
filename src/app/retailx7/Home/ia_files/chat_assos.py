@@ -8,6 +8,13 @@ from mistralai import Mistral
 import json
 import functools
 
+import numpy as np
+from PIL import Image as PILImage
+from io import BytesIO
+from django.core.files.base import ContentFile
+from django.conf import settings
+from Home.models import Image
+
 model = "mistral-small-latest"
 api_key = os.environ["MISTRAL_API_KEY"]
 client = Mistral(api_key=api_key)
@@ -117,13 +124,6 @@ def create_first_message(outfit):
         - relevant details
     """
 
-import os
-import numpy as np
-from PIL import Image as PILImage
-from io import BytesIO
-from django.core.files.base import ContentFile
-from django.conf import settings
-from .models import Image
 
 def save_outfit_images(outfit):
     """
