@@ -13,7 +13,7 @@
     {% if chatbot %}
         <h1>Chatbot</h1>
         <div id="chat-box">
-            <h>{{ chatbot.message|json_script:"chatbot-messages" }}</h>
+            <h>{{ chatbot.message}}</h>
         </div>
 
         <textarea id="user-input" placeholder="Tapez votre message..."></textarea>
