@@ -120,7 +120,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# Optionnel : Si vous avez des fichiers statiques à la racine de votre projet, ajoutez ce chemin :
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Si vous avez un dossier 'static' à la racine du projet
+]
+
+# Répertoire où collecter les fichiers statiques pour la production
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Pour la production
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -133,3 +141,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 AUTH_USER_MODEL = 'Home.CustomUser'
+

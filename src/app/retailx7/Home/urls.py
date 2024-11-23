@@ -7,3 +7,4 @@ urlpatterns = [
     path('chatbot-response/', views.chatbot_response, name='chatbot_response'),
     path('', views.home, name='home'),
 ]
+
