@@ -35,6 +35,7 @@ def home(request):
     # Formulaire d'upload d'image
     if request.method == 'POST' and 'upload_image' in request.POST:
         form = ImageUploadForm(request.POST, request.FILES)
+        print("post")
         if form.is_valid():
             image = form.save(commit=False)
             image.user = request.user
