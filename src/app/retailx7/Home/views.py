@@ -10,7 +10,7 @@ from .models import ChatbotConversation
 
 import base64, json
 
-from pixtral_script import recommend_from_image
+from ia_files.pixtral_script import recommend_from_image
 
 # Vue de login
 def user_login(request):
