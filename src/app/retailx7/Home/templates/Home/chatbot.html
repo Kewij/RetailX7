@@ -50,7 +50,7 @@
 
                 // Envoi de la requête AJAX pour envoyer le message de l'utilisateur au backend
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '', true);  // Requête POST vers la même URL
+                xhr.open('POST', '/chatbot-response/', true)  // Requête POST vers la même URL
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.setRequestHeader('X-CSRFToken', getCSRFToken());  // Ajouter le token CSRF aux en-têtes
 
