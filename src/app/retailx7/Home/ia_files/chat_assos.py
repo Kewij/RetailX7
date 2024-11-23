@@ -140,7 +140,7 @@ def pipeline_chatbot(user_input, messages=[]):
     )
     messages.pop()
     messages.append({"role": "user", "content": user_input})
-    messages.append({"role": "assistant", "content": chat_response.choices[0].message.content})
+    messages.append({"role": "assistant", "content": chat_response.choices[0].message.content, "dict_infos" : {}})
     
     return messages
 
