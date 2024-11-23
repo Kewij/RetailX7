@@ -22,12 +22,13 @@ class CustomUser(AbstractUser):
 
 class Image(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,  # Utilisez AUTH_USER_MODEL pour garantir que l'utilisateur est un CustomUser
-        on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL,  # Utilisation du modèle d'utilisateur personnalisé (CustomUser)
+        on_delete=models.CASCADE,
+        related_name='user_images'  # Ce related_name permet d'accéder aux images via user.user_images.all()
     )
-    image = models.ImageField(upload_to='user_images/')  # Téléchargement d'image
-    description = models.CharField(max_length=255, blank=True)  # Description de l'image
+    image = models.ImageField(upload_to='user_images/')
+    description = models.TextField(blank=True)
 
     def __str__(self):
-        return f"Image de {self.user.username}"
+        return f"Image {self.id} de {self.user.username}"
 
