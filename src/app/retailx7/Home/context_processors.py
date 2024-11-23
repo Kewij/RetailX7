@@ -13,6 +13,7 @@ def chatbot_context(request):
     # Récupérer les dernières conversations du chatbot pour l'utilisateur connecté
     if request.user.is_authenticated:
         chatbot = ChatbotConversation.objects.get_or_create(user=request.user)
+        print(chatbot)
         
         context = {
             'chatbot': chatbot,
