@@ -10,7 +10,7 @@ from .models import ChatbotConversation
 
 import base64, json
 
-from .ia_files.pixtral_script import recommend_from_image
+from .ia_files.pixtral_script import list_clothes
 
 # Vue de login
 def user_login(request):
@@ -41,7 +41,7 @@ def home(request):
             image_file = request.FILES['image']  # Get the uploaded image from the form
             image_bytes = image_file.read()  # Read the file as bytes
             image_base64 = base64.b64encode(image_bytes).decode('utf-8')  # Encode to Base64
-            image.description = json.loads(recommend_from_image(image_base64))
+            image.description = json.loads(list_clothes(image_base64))
 
 
 
