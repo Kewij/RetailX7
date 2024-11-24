@@ -144,7 +144,7 @@ def create_first_message(outfit):
     return f"""
     Here are your recommendations to keep in memory:
     {outfit}
-    Respond to the user by confirming that you have relevant recommendations. Do not explicitly reveal the details of the recommendations.
+    Respond to the user by confirming that you have relevant recommendations. Do not explicitly reveal the details of the recommendations. Your answer must contain two sentences at most.
     """
 
 def save_outfit_images(outfit):
