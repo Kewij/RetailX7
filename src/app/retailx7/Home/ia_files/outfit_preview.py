@@ -28,6 +28,8 @@ def generate_outfit_preview(prompt, negative_prompt):
     response = requests.post(url=f'{url}/sdapi/v1/txt2img', json=payload)
     r = response.json()
 
+    return base64.b64decode(r['images'][0])
+
     # Decode and save the image.
-    with open("output.png", 'wb') as f:
-        f.write(base64.b64decode(r['images'][0]))
+    #with open("output.png", 'wb') as f:
+    #    f.write(base64.b64decode(r['images'][0]))

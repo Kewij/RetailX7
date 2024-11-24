@@ -16,10 +16,16 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 from Home.models import Image, InformationUser
 from .pixtral_script import pipeline_reco_from_wardrobe
+from .outfit_preview import generate_outfit_preview
 
 model = "mistral-small-latest"
 api_key = os.environ["MISTRAL_API_KEY"]
 client = Mistral(api_key=api_key)
+
+def callback_generate_outfit_preview():
+    positive_prompt = ""
+    negative_prompte = "((((ugly)))), (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), out of frame, ugly, extra limbs, (bad anatomy), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), mutated hands, (fused fingers), (too many fingers), (((long neck)))"
+    image = generate_outfit_preview(positive_prompt, negative_prompte)
 
 
 def is_recommandation(user_input):
