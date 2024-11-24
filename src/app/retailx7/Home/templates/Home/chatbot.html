@@ -14,6 +14,7 @@
         <div id="chat-box">
             <!-- Afficher directement les messages du chatbot -->
             {% for msg in chatbot.message %}
+                {% if msg.role != "system" %}
                 <div class="{{ msg.role }}-message">
                     <strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
                     {% if msg.dict_infos %}
@@ -22,7 +23,7 @@
                                 {% for key, value in clothe.items %}
                                     {% if key == 'imageUrl' %}
                                         <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
-                                            <img src="{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                            <img src="https://{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
                                         </li>
                                     {% else %}
                                         <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
@@ -34,6 +35,7 @@
                         </ul>
                     {% endif %}
                 </div>
+                {% endif %}
             {% endfor %}
         </div>
 
@@ -76,7 +78,7 @@
                         if (key === 'imageUrl') {
                             html += `
                                 <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
-                                    <img src="${value}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                    <img src="https://${value}" alt="" style="max-width: 100%; border-radius: 5px;">
                                 </li>`;
                         } else {
                             html += `
