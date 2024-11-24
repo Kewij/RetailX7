@@ -52,6 +52,11 @@ class Image(models.Model):
         return f"Image {self.id} de {self.user.username}"
     
 
+
+class ImageGenere(models.Model):
+    image = models.ImageField(upload_to='images_generees/')  # Images will be saved in the "images/" directory.
+    
+
 class ChatbotConversation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     message = models.JSONField(default=list) 

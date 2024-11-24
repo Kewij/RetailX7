@@ -16,17 +16,14 @@ from django.core.files.base import ContentFile
 from django.conf import settings
 from Home.models import Image, InformationUser
 from .pixtral_script import pipeline_reco_from_wardrobe
-from .outfit_preview import generate_outfit_preview
+from .chat_stable_diff import *
 from .asos_requests import request_asos_outfit
 
 model = "mistral-small-latest"
 api_key = os.environ["MISTRAL_API_KEY"]
 client = Mistral(api_key=api_key)
 
-def callback_generate_outfit_preview():
-    positive_prompt = ""
-    negative_prompte = "((((ugly)))), (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), ((ugly)), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), out of frame, ugly, extra limbs, (bad anatomy), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), mutated hands, (fused fingers), (too many fingers), (((long neck)))"
-    image = generate_outfit_preview(positive_prompt, negative_prompte)
+
 
 
 def is_recommandation(user_input):
@@ -171,10 +168,13 @@ def query_chat(new_query, user, messages=[]):
     user_infos = retrieve_information(user)
     infos_text = transform_dict_llm(user_infos)
     bool_reco = is_recommandation(new_query)
+    bool_preview_outfit = is_generate_outfit(new_query)
     if bool_reco == "True" and user.user_images.exists():
         messages = pipeline_reco_from_wardrobe(new_query, user, infos_text, messages)
     elif bool_reco == "True":
         messages = pipeline_chatbot(new_query, infos_text, messages)
+    elif bool_preview_outfit == "True":
+        messages = pipeline_preview_outfit(new_query, infos_text, messages)
     else:
         messages.append({"role": "user", "content": new_query})
         response = client.chat.complete(
