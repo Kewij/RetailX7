@@ -96,7 +96,9 @@ def list_clothes(args):
 
 def process_critique(args):
     wardrobe, model = args
-    with open("./guides/critique_guide.txt", "r") as f:
+    path = os.path.dirname(__file__)
+    path=os.path.join(path,"guides","critique_guide.txt")
+    with open(path, "r") as f:
         guide = f.read()
     
     chat_response = client.chat.complete(
@@ -115,7 +117,9 @@ def process_critique(args):
 def recommend_item(args):
     critique, color_rule, piece_rule, element, model = args  
     image_base64 = args
-    with open("./guides/desc_guide.txt", "r") as f:
+    path = os.path.dirname(__file__)
+    path=os.path.join(path,"guides","desc_guide.txt")
+    with open(path, "r") as f:
         guide = f.read()
     # Define the messages for the chat API
     messages = [
