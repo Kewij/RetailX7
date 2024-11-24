@@ -3,7 +3,7 @@ import ast
 from skimage import io
 import requests
 
-def scrap_asos(query, maxItems = 3):
+def scrap_asos(query, maxItems = 1):
     """ Data scraper from asos.
     Inputs: 
         query (str): search query
@@ -42,7 +42,7 @@ def scrap_asos(query, maxItems = 3):
                 "name" : item["name"],
                 "brandName" : item["brandName"],
                 "price" : price,
-                "image" : io.imread(item["images"][0]["url"]),
+                "imageUrl" : item["images"][0]["url"],
                 "gender" : item["gender"],
                 "url" : item["url"]
             })
