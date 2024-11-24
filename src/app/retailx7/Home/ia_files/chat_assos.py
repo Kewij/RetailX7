@@ -8,6 +8,13 @@ from mistralai import Mistral
 import json
 import functools
 
+import numpy as np
+from PIL import Image as PILImage
+from io import BytesIO
+from django.core.files.base import ContentFile
+from django.conf import settings
+from Home.models import Image
+
 model = "mistral-small-latest"
 api_key = os.environ["MISTRAL_API_KEY"]
 client = Mistral(api_key=api_key)
@@ -117,6 +124,52 @@ def create_first_message(outfit):
         - relevant details
     """
 
+
+def save_outfit_images(outfit):
+    """
+    Save outfit images from a list of dictionaries to the server and create Image objects.
+    
+    Args:
+        outfit (list): List of dictionaries, each containing a NumPy image and a "url" key.
+
+    Returns:
+        None
+    """
+    for item in outfit:
+        # Extract the NumPy image and URL
+        numpy_image = item.get('image')  # Assuming this is a NumPy array
+        url = item.get('url')
+
+        if numpy_image is not None and url is not None:
+            # Convert the NumPy array to a Pillow Image
+            pil_image = PILImage.fromarray(numpy_image)
+
+            # Generate a unique file name for the image
+            file_name = f"{url.replace('/', '_')}.jpg"
+
+            # Save the file to the 'image_produit_suggere' folder in MEDIA_ROOT
+            folder_path = os.path.join(settings.MEDIA_ROOT, 'image_produit_suggere')
+            os.makedirs(folder_path, exist_ok=True)  # Ensure the folder exists
+            file_path = os.path.join(folder_path, file_name)
+
+            # Save the Pillow image as a file
+            pil_image.save(file_path)
+
+            # Create a Django File object to save it in the Image model
+            with open(file_path, 'rb') as file:
+                image_content = ContentFile(file.read())
+
+                # Create and save the Image model instance
+                image_instance = Image.objects.create(
+                    user=None,  # Add the user if required
+                    image=image_content,  # Assign the saved image file
+                    description=url  # Use the URL as the description
+                )
+                image_instance.save()
+            
+            item["image"] = image_instance
+    return outfit
+ 
 def pipeline_chatbot(user_input, messages=[]):
     # Met le prompt dans le LLM
     # messages.append({"role":"user", "content":prompt})
@@ -129,15 +182,16 @@ def pipeline_chatbot(user_input, messages=[]):
     queries = chat_response.choices[0].message.content
     print(queries)
     outfit = scrap_asos_outfit(queries, maxItems=1)
+    outfit = save_outfit_images(outfit)
     # Créé et envoie un message à envoyer au user
     message_outfit = create_first_message(json.dumps(outfit, indent=4))
     print(message_outfit)
+    messages.append({"role": "user", "content": user_input})
     messages.append({"role":"system", "content":message_outfit})
     chat_response = client.chat.complete(
         model = model,
         messages = messages
     )
-    messages.append({"role": "user", "content": user_input})
     messages.append({"role": "assistant", "content": chat_response.choices[0].message.content, "dict_infos" : outfit})
     
     return messages
