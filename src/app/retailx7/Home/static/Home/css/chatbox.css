@@ -31,6 +31,8 @@
 .user-message {
     background-color: #e9ecef;
     align-self: flex-end;
+    margin-top: 10px;
+    margin-bottom: 10px;
     color: #495057;
     border: 1px solid #ced4da;
     animation: slideInRight 0.3s ease;
@@ -38,6 +40,8 @@
 
 /* Assistant Message */
 .assistant-message {
+    margin-top: 10px;
+    margin-bottom: 10px;
     background-color: #d1ecf1;
     align-self: flex-start;
     color: #0c5460;
