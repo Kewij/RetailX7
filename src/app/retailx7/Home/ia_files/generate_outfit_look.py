@@ -76,56 +76,6 @@ def generate_outfit_preview(prompt, negative_prompt, path_to_ref_picture):
         "n_iter": 1,
         "batch_size": 1,
 
-        # Parameters for Refiner and ControlNet
-        "alwayson_scripts": {
-            "ControlNet": {
-                 "args": [
-                     {
-                         "batch_images": "",
-                         "control_mode": "Balanced",
-                         "enabled": True,
-                         "guidance_end": 1,
-                         "guidance_start": 0,
-                         "image": {
-                             "image": encode_file_to_base64(path_to_ref_picture),
-                             "mask": None  # base64, None when not need
-                         },
-                         "input_mode": "simple",
-                         "is_ui": True,
-                         "loopback": False,
-                         "low_vram": False,
-                         "model": "control_v11p_sd15_canny [d14c016b]",
-                         "module": "canny",
-                         "output_dir": "",
-                         "pixel_perfect": False,
-                         "processor_res": 512,
-                         "resize_mode": "Crop and Resize",
-                         "threshold_a": 100,
-                         "threshold_b": 200,
-                         "weight": 1
-                     }
-                 ]
-            },
-            "Refiner": {
-                "args": [
-                    True,
-                    "sd_xl_refiner_1.0",
-                    0.5
-                ]
-            },
-            "Adetailer": {
-                "args": [
-                    True,
-                    "face_yolov8n.pt"
-                ]
-            }
-        },
-
-        # Choose the model chekcpoint (could be specified in the bat file of the auto)
-        "override_settings": {
-            # "sd_model_checkpoint": "v1-5-pruned-emaonly.safetensors [6ce0161689]",
-            #"sd_model_checkpoint": "IPXL_v8.safetensors [6bd1a90a93]",
-            "sd_model_checkpoint": "cyberrealistic_v40.safetensors [481d75ae9d]", 
-        },
+        
     }
     call_txt2img_api(**payload)
