@@ -6,7 +6,8 @@ import json
 from django.utils.safestring import mark_safe
 
 # Inline model for InformationUser
-class InformationUserInline(admin.StackedInline):
+@admin.register(InformationUser)
+class InformationUserInline():#admin.StackedInline):
     model = InformationUser
     can_delete = False
     verbose_name_plural = 'Information'
