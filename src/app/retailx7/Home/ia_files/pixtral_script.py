@@ -47,7 +47,7 @@ def img_to_base64_path(image_path):
 def list_clothes(args): 
     image_base64 = args
     path = os.path.dirname(__file__)
-    path=os.path.join(path,"/guides/desc_guide.txt")
+    path=os.path.join(path,"guides","desc_guide.txt")
     with open(path, "r") as f:
         guide = f.read()
         
