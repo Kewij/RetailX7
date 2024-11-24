@@ -66,7 +66,7 @@ def request_asos(query, maxItems=3):
 	querystring = {"store":"US","offset":"0","q": query,"limit": str(maxItems), "country":"US","sort":"freshness","currency":"USD","sizeSchema":"US","lang":"en-US"}
 
 	headers = {
-		"x-rapidapi-key": "7c2a2e3244msh805418e285d23cbp1faaa8jsn691342a23625",
+		"x-rapidapi-key": "6738c1ebd2msh8f7ad9a8c5fe937p17a4ebjsn4e3f7741dde5",
 		"x-rapidapi-host": "asos2.p.rapidapi.com"
 	}
 
