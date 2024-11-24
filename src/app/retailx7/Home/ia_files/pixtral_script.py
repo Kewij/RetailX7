@@ -5,6 +5,7 @@ import json
 import pandas as pd
 from typing import Union
 import numpy as np
+from chat_assos import request_asos
 
 # Load Mistral API key from environment variables
 api_key = os.environ["MISTRAL_API_KEY"]
@@ -192,3 +193,8 @@ def recommend_from_wardrobe(wardrobe, element = empty_element):
     content = chat_response.choices[0].message.content
     
     return content
+
+def fetch_from_img_reco(recommandations):
+    query = recommandations["fit"] + " " + recommandations["color"] + " " + recommandations["element"]
+    clothe = request_asos(query, maxItems=1)
+    return {clothe["imageUrl"]: clothe["url"]}
