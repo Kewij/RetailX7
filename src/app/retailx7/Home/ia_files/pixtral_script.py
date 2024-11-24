@@ -209,7 +209,8 @@ def generate_wardrobe(new_query, user):
         {
             "role": "system",
             "content": "Return the answer as a single number, either positive or -1 but nothing else. ,"
-                        "You must **only** return the numerical value corresponding to the image number or -1. No additional information or text is needed in your response."
+                        "You must **only** return the numerical value corresponding to the image number. No additional information or text is needed in your response."
+                        "If there is no number in the prompt, you will return -1. Never return -1 if there is a number in the prompt."
         },
         {
             "role": "system",
