@@ -15,4 +15,5 @@ r = response.json()
 
 # Decode and save the image.
 with open("output.png", 'wb') as f:
+    print(r)
     f.write(base64.b64decode(r['images'][0]))
