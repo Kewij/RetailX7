@@ -189,7 +189,7 @@ def query_chat(new_query, user, messages=[]):
     elif bool_reco == "True":
         messages, _ = pipeline_chatbot(new_query, user_infos, messages)
     elif bool_preview_outfit == "True":
-        messages = pipeline_preview_outfit(new_query, infos_text, messages)
+        messages = pipeline_preview_outfit(new_query, user_infos, messages)
     else:
         messages.append({"role": "user", "content": new_query})
         response = client.chat.complete(

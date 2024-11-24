@@ -75,7 +75,8 @@ def add_prompt_for_stable_diff(prompt, infos_text=None):
     print(infos_text)
     if infos_text == None:
         return "High quality realistic photo of a man wearing " + prompt
-    return  f"High quality realistic photo of a {infos_text["gender"]} wearing " + prompt
+    gender = infos_text["gender"]
+    return  f"High quality realistic photo of a {gender} wearing " + prompt
 
 def pipeline_preview_outfit(user_input, infos_text=None, messages=[]):
     # Met le prompt dans le LLM
