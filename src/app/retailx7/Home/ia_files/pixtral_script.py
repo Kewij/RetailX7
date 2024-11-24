@@ -236,8 +236,8 @@ def generate_wardrobe(new_query, user):
     ).choices[0].message.content)
     print(f"Image choisie : {img}")
     images = user.user_images.all()
-    if img != -1:
-        print("Description choisie :", images[img].description["elements"])
+    if img >1:
+        print("Description choisie :", images[img-1].description["elements"])
     if img is None:
         # Wardrobe complète
         wardrobe = []
