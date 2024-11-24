@@ -5,7 +5,7 @@ import json
 import time
 import os
 
-webui_server_url = 'http://127.0.0.1:7860'
+webui_server_url = 'http://localhost:9090'
 
 out_dir = 'api_out'
 out_dir_t2i = os.path.join(out_dir, 'txt2img')
@@ -30,14 +30,36 @@ def decode_and_save_base64(base64_str, save_path):
 
 
 def call_api(api_endpoint, **payload):
+    # Convert the payload to JSON
     data = json.dumps(payload).encode('utf-8')
+
+    # Construct the full URL
+    url = f'{webui_server_url}/{api_endpoint}'
+
+    # Create the request
     request = urllib.request.Request(
-        f'{webui_server_url}/{api_endpoint}',
-        headers={'Content-Type': 'application/json'},
+        url,
+        headers={
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'  # Add Accept header for APIs expecting it
+        },
         data=data,
+        method='POST'  # Explicitly define the method
     )
-    response = urllib.request.urlopen(request)
-    return json.loads(response.read().decode('utf-8'))
+
+    # Send the request and handle errors
+    try:
+        with urllib.request.urlopen(request) as response:
+            # Parse and return the response JSON
+            return json.loads(response.read().decode('utf-8'))
+    except urllib.error.HTTPError as e:
+        print(f"HTTPError: {e.code} {e.reason}")
+        print(f"Response: {e.read().decode('utf-8')}")
+        raise
+    except urllib.error.URLError as e:
+        print(f"URLError: {e.reason}")
+        raise
+
 
 
 def call_txt2img_api(**payload):
@@ -76,56 +98,6 @@ def generate_outfit_preview(prompt, negative_prompt, path_to_ref_picture):
         "n_iter": 1,
         "batch_size": 1,
 
-        # Parameters for Refiner and ControlNet
-        "alwayson_scripts": {
-            "ControlNet": {
-                 "args": [
-                     {
-                         "batch_images": "",
-                         "control_mode": "Balanced",
-                         "enabled": True,
-                         "guidance_end": 1,
-                         "guidance_start": 0,
-                         "image": {
-                             "image": encode_file_to_base64(path_to_ref_picture),
-                             "mask": None  # base64, None when not need
-                         },
-                         "input_mode": "simple",
-                         "is_ui": True,
-                         "loopback": False,
-                         "low_vram": False,
-                         "model": "control_v11p_sd15_canny [d14c016b]",
-                         "module": "canny",
-                         "output_dir": "",
-                         "pixel_perfect": False,
-                         "processor_res": 512,
-                         "resize_mode": "Crop and Resize",
-                         "threshold_a": 100,
-                         "threshold_b": 200,
-                         "weight": 1
-                     }
-                 ]
-            },
-            "Refiner": {
-                "args": [
-                    True,
-                    "sd_xl_refiner_1.0",
-                    0.5
-                ]
-            },
-            "Adetailer": {
-                "args": [
-                    True,
-                    "face_yolov8n.pt"
-                ]
-            }
-        },
-
-        # Choose the model chekcpoint (could be specified in the bat file of the auto)
-        "override_settings": {
-            # "sd_model_checkpoint": "v1-5-pruned-emaonly.safetensors [6ce0161689]",
-            #"sd_model_checkpoint": "IPXL_v8.safetensors [6bd1a90a93]",
-            "sd_model_checkpoint": "cyberrealistic_v40.safetensors [481d75ae9d]", 
-        },
+        
     }
     call_txt2img_api(**payload)
