@@ -23,7 +23,7 @@
                                 {% for key, value in clothe.items %}
                                     {% if key == 'imageUrl' %}
                                         <li style="margin: 10px 0; padding: 10px; text-align: center;">
-                                            <a href="{%clothe.url%}">
+                                            <a href="{{ clothe.url }}">
                                                 <img src="{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
                                             </a>
                                         </li>
