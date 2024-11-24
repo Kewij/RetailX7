@@ -16,7 +16,7 @@
             {% for msg in chatbot.message %}
                 <div class="{{ msg.role }}-message">
                     <strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
-                    
+                    {% if msg.dict_infos %}
                         <ul style="list-style-type: none; padding: 0; margin: 0;">
                             {% for clothe in msg.dict_infos %}
                                 {% for key, value in clothe.items %}
@@ -32,7 +32,7 @@
                                 {% endfor %}
                             {% endfor %}
                         </ul>
-                    
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
