@@ -17,7 +17,6 @@ def generate_outfit_preview(prompt, negative_prompt):
             "sampler_name": "DPM++ 2M Karras",
             "n_iter": 1,
             "batch_size": 1,
-
             "override_settings": {
                 "sd_model_checkpoint": "realisticVisionV60B1_v51HyperVAE.safetensors [f47e942ad4]", 
             },
