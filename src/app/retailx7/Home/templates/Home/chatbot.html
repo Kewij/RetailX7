@@ -23,13 +23,12 @@
                                 {% for key, value in clothe.items %}
                                     {% if key == 'imageUrl' %}
                                         <li style="margin: 10px 0; padding: 10px; text-align: center;">
-                                            <img src="{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                            <a href="{%clothe.url%}">
+                                                <img src="{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                            </a>
                                         </li>
                                     {% else %}
                                         {% if key == 'url' %}
-                                            <li style="margin: 10px 0; padding: 10px;">
-                                                <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
-                                            </li>
                                         {% else %}
                                             <li style="margin: 10px 0; padding: 10px">
                                                 <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
@@ -84,7 +83,9 @@
                         if (key === 'imageUrl') {
                             html += `
                                 <li style="margin: 10px 0; padding: 10px; text-align: center;">
-                                    <img src="${value}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                    <a href='${clothe["url"]}'>
+                                       <img src="${value}" alt="" style="max-width: 100%; border-radius: 5px;"> 
+                                    </a>
                                 </li>`;
                         } else if (key === 'url') {
                             html += `
