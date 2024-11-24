@@ -205,36 +205,32 @@ def fetch_from_img_reco(recommandations):
     return clothe
 
 def generate_wardrobe(new_query, user):
-    prompt = """
-    The user is asking you for an outfit or clothing suggestion. They may optionally indicate the number of an image they have uploaded for you to use as a reference.
+    messages = [
+        {
+            "role": "system",
+            "content": "Return the answer as a single number, either positive or -1 but nothing else. ,"
+                        "You must **only** return the numerical value corresponding to the image number or -1. No additional information or text is needed in your response."
+        },
+        {
+            "role": "system",
+            "content": "1. If the user explicitly mentions an image number (e.g., 'image 1' or 'picture 4' or 'photo 2'), return only that number as an integer. ,"
+                        "2. If the user does not mention any image or does not provide a clear number, return -1."
+        },
+        {
+            "role": "user",
+            "content": new_query
+        }
+    ]
 
-    Your task is straightforward:
-    1. If the user explicitly mentions an image number (e.g., "Use image 1"), return only that number as an integer.
-    - Example: 1
-    2. If the user does not mention any image or does not provide a clear number, return -1.
-
-    You must **only** return the numerical value corresponding to the image number or -1. No additional information or text is needed in your response.
-
-    **Examples:**
-    - Input: "Can you use image 2 to suggest an outfit?"
-    Output: 2
-    - Input: "I’d like a suggestion but without using my images."
-    Output: -1
-    - Input: "Use photo 5 for my professional outfit."
-    Output: 5
-    - Input: "can you recommend a clothe that goes with image 1?"
-    Output: 1
-    - Input: "Suggest an outfit for winter."
-    Output: -1
-
-    """
-
-    message = {"role": "system", "content": prompt}
-    img = int(client.chat.complete(
+    img = client.chat.complete(
         model="mistral-small-latest",
-        messages=[message, {"role": "user", "content": new_query}]
-    ).choices[0].message.content)
+        messages=messages
+    ).choices[0].message.content
+    
     print(f"Image choisie : {img}")
+    img = int(img)
+    
+    
     images = user.user_images.all()
     if img > 1:
         print("Description choisie :", images[img-1].description["elements"])
