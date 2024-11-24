@@ -14,6 +14,34 @@ L'interface consiste en un espace de chat avec votre assistant. Le bouton **uplo
 
 Une fois la photo reçue, elle est process par Pixtral qui en extrait une description de chanque vêtement et la stocke dans votre garde-robe. La photo est quand à elle ajoutée à l'onglet "vos images".
 
+## 1.0 Se connecter au site
+
+#### 1.0.1 Instructions pour se connecter au site
+
+1. **Accéder au site**  
+   Rendez-vous sur l'URL suivante :  
+   👉 [http://devops.tlapp.net](http://devops.tlapp.net)
+
+2. **Se connecter**  
+   Utilisez les identifiants suivants :  
+   - **Nom d'utilisateur** : `6freds`  
+   - **Mot de passe** : `6freds`  
+
+---
+
+##### Limitation actuelle
+La fonction de génération d'image **ne sera pas disponible** car elle nécessite l'utilisation des identifiants Polytechnique pour fonctionner correctement.
+
+#### 1.0.2 Lancer le Git
+
+```bash
+   git clone https://github.com/Kewij/RetailX7.git
+   cd RetailX7/src/app/retailx7
+   pip3 install -r requirements.txt
+   python3 manage.py migrate
+   python3 manage.py runserver 0.0.0.0:8000 &
+```
+
 ### 1.1. Génération d'une recommandation
 
 Le chatbot est designé pour répondre à des sollicitations de mode, suite à des prompts du type "Can you recommend a clothe to match image number 7 ?" ou similaire.
