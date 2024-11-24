@@ -18,16 +18,18 @@
                     <strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
                     {% if msg.dict_infos %}
                         <ul style="list-style-type: none; padding: 0; margin: 0;">
-                            {% for key, value in msg.dict_infos.items %}
-                                {% if key == 'image' %}
-                                    <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
-                                        <img src="{{ value.image.url }}" alt="{{ value.description }}" style="max-width: 100%; border-radius: 5px;">
-                                    </li>
-                                {% else %}
-                                    <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
-                                        <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
-                                    </li>
-                                {% endif %}
+                            {% for clothe in msg.dict_infos %}
+                                {% for key, value in clothe.items %}
+                                    {% if key == 'image' %}
+                                        <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
+                                            <img src="{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                        </li>
+                                    {% else %}
+                                        <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                                            <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
                         </ul>
                     {% endif %}
