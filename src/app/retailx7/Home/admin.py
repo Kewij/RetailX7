@@ -1,11 +1,18 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Image, ChatbotConversation
+from .models import CustomUser, Image, ChatbotConversation, InformationUser
 import json
 
 from django.utils.safestring import mark_safe
 
-# Custom admin for CustomUser
+# Inline model for InformationUser
+class InformationUserInline(admin.StackedInline):
+    model = InformationUser
+    can_delete = False
+    verbose_name_plural = 'Information'
+    fields = ('gender', 'favorite_color', 'height', 'weight')  # Fields to display in the inline form
+
+# CustomUserAdmin with InformationUser inline
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     # Customize the fields displayed in the admin panel
@@ -15,6 +22,9 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'is_staff', 'is_active', 'bio')  # Fields displayed in the list view
     search_fields = ('username', 'email', 'bio')  # Fields searchable in the admin panel
     filter_horizontal = ('images', 'groups', 'user_permissions')  # Makes ManyToManyFields easier to manage
+
+    # Add the inline for InformationUser
+    inlines = [InformationUserInline]
 
 # Custom admin for Image
 @admin.register(Image)
