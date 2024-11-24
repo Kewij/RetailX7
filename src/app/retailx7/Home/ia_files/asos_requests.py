@@ -19,7 +19,7 @@ def scrap_asos(query, maxItems = 1):
             gender (str): gender of the item
     """
     
-    client = ApifyClient("apify_api_HnfDIXYXI6uSQtaVo39ZxJXRGhn2mG37wYwM")
+    client = ApifyClient("apify_api_1vviXftfTkedo42hImbgEObdyPzona04OemG")
     
     run_input = {
         "search": query,
