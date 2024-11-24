@@ -65,7 +65,10 @@ def home(request):
 
     # Initialize forms
     image_form = ImageUploadForm()
-    info_form = InformationUserForm(instance=request.user.information_user)
+    if has_information:
+        info_form = InformationUserForm(instance=request.user.information_user)
+    else:
+        info_form = InformationUserForm()
 
     if request.method == 'POST':
         # Check if it's an image form submission
