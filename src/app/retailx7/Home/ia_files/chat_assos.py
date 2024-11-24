@@ -199,17 +199,14 @@ def retrieve_information(user):
         print("Anonymous user.")
         return {}
     
-def make_suggestions(user, nb_suggestions=0):
+def make_suggestions(user, nb_suggestions=1):
     suggestions = []
     user_infos = retrieve_information(user)
     user_infos = transform_dict_llm(user_infos)
     new_query = "Give me some nice oufits recommandations."
 
     while len(suggestions) < nb_suggestions:
-        if user.user_images.exists():
-            _, clothes = pipeline_reco_from_wardrobe(new_query, user, user_infos, [])
-        else:
-            _, clothes = pipeline_chatbot(new_query, user_infos, [])
+        _, clothes = pipeline_chatbot(new_query, user_infos, [])
         suggestions += clothes
     
     return suggestions
