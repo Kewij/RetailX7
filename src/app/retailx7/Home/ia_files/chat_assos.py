@@ -15,7 +15,7 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 from django.conf import settings
 from Home.models import Image, InformationUser
-from pixtral_script import pipeline_reco_from_wardrobe
+from .pixtral_script import pipeline_reco_from_wardrobe
 
 model = "mistral-small-latest"
 api_key = os.environ["MISTRAL_API_KEY"]
