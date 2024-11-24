@@ -2,7 +2,7 @@
 from .outfit_preview import generate_outfit_preview
 import os
 from mistralai import Mistral
-from Home.models import ImageModel
+from Home.models import ImageGenere
 
 model = "mistral-small-latest"
 api_key = os.environ["MISTRAL_API_KEY"]
@@ -79,7 +79,7 @@ def pipeline_preview_outfit(user_input, infos_text=None, messages=[]):
     """
     # Pour le scrap rapide
     image = callback_generate_outfit_preview(queries)
-    image_instance = ImageModel.objects.create(name=name, image=image_file)
+    image_instance = ImageGenere.objects.create(image=image)
     image_url = image_instance.image.url
     messages.append({"role": "assistant", "content": "This the preview", "dict_infos" : [{"imageUrl" : image_url}]})
     
