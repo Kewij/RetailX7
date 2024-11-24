@@ -233,7 +233,7 @@ def generate_wardrobe(new_query, user):
     
     
     images = user.user_images.all()
-    if img > 1:
+    if img > 0:
         print("Description choisie :", images[img-1].description["elements"])
     if img == -1:
         # Wardrobe complète
@@ -246,7 +246,7 @@ def generate_wardrobe(new_query, user):
         # Choix d'un outfit spécifique
         wardrobe = images[img-1].description["elements"]
 
-    return {"elements": wardrobe}
+    return {"elements": wardrobe}, img
 
 def generate_empty_element(new_query):
     prompt = """
@@ -350,7 +350,9 @@ def create_reco_message(outfit, desc):
 
 
 def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
-    wardrobe = generate_wardrobe(new_query, user)
+    wardrobe, img = generate_wardrobe(new_query, user)
+    if img > 0:
+        stable_message = {"role": "system", "content": f"Here is the description of the outfit in the image number {img}: {json.dumps(wardrobe['elements'])}"}
     wardrobe = json_to_dataframe(wardrobe, key="elements")
     empty_element = generate_empty_element(new_query)
     content = json.loads(recommend_from_wardrobe((wardrobe, empty_element)))["elements"][0]
@@ -358,6 +360,9 @@ def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
     clothe = fetch_from_img_reco(content)
     reco_message = create_reco_message(clothe, desc)
     messages.append({"role": "user", "content": new_query})
+    if img > 0:
+        print("Message pour l'image : ", stable_message)
+        messages.append(stable_message)
     messages.append({"role": "system", "content": reco_message})
     reco_response = client.chat.complete(
         model="mistral-small-latest",

@@ -69,8 +69,8 @@ def make_prompt(user_input, infos_text=None):
         return f"""
         You are a personal fashion advisor. 
         Your role is to provide customized fashion recommendations to users based on their preferences, occasion, budget and personal information. 
-        Your response must only include a list of references for items that can be searched on a shopping website, formatted as a list within square brackets []. 
-        Based on the provided information, include the gender in your references if it is available.
+        Your response must only include a list of references for items that can be searched on a shopping website, formatted as a list within square brackets []. Adapt your research to the user's gender.
+        Your answer must only contain the list.
 
         # Example Conversation:
         User Input:
@@ -79,7 +79,8 @@ def make_prompt(user_input, infos_text=None):
         LLM Response:
         ["slim-fit navy blazers", "non-iron stretch Oxford shirts", "stretch slim-fit chinos", "leather loafers"]
 
-        {infos_text}
+        # User's gender
+        {infos_text["gender"]}
 
         # User Input:
         {user_input}
@@ -186,9 +187,9 @@ def query_chat(new_query, user, messages=[]):
     if bool_reco == "True" and user.user_images.exists():
         messages, _ = pipeline_reco_from_wardrobe(new_query, user, infos_text, messages)
     elif bool_reco == "True":
-        messages, _ = pipeline_chatbot(new_query, infos_text, messages)
+        messages, _ = pipeline_chatbot(new_query, user_infos, messages)
     elif bool_preview_outfit == "True":
-        messages = pipeline_preview_outfit(new_query, infos_text, messages)
+        messages = pipeline_preview_outfit(new_query, user_infos, messages)
     else:
         messages.append({"role": "user", "content": new_query})
         response = client.chat.complete(
@@ -213,10 +214,9 @@ def retrieve_information(user):
         print("Anonymous user.")
         return {}
     
-def make_suggestions(user, nb_suggestions=1):
+def make_suggestions(user, nb_suggestions=3):
     suggestions = []
     user_infos = retrieve_information(user)
-    user_infos = transform_dict_llm(user_infos)
     new_query = "Give me some nice oufits recommandations."
 
     while len(suggestions) < nb_suggestions:
