@@ -369,4 +369,5 @@ def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
         messages=messages,
     ).choices[0].message.content
     messages.append({"role": "assistant", "content": reco_response, "dict_infos": clothe})
+    print("clothe :", clothe)
     return messages, clothe

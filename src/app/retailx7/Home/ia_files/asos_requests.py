@@ -37,7 +37,7 @@ def scrap_asos(query, maxItems = 1):
         try :
             # Certains articles n'ont pas de prix d'où la gestion d'erreur
             price = item["variants"][0]["pricing"]["price"]["current"]["text"]
-            print(item["images"][0]["url"])
+            print("url de l'outfit", item["images"][0]["url"])
             Items.append({
                 "name" : item["name"],
                 "brandName" : item["brandName"],
@@ -48,7 +48,7 @@ def scrap_asos(query, maxItems = 1):
             })
         except:
             pass
-        
+    print(Items)
     return Items
 
 def scrap_asos_outfit(queries, maxItems=3):
