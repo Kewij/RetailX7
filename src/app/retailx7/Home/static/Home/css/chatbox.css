@@ -64,38 +64,3 @@
     background-color: #0056b3;
 }
 
-/* Animations */
-@keyframes slideInRight {
-    from {
-        transform: translateX(50%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-50%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Responsive Design for Smaller Screens */
-@media (max-width: 768px) {
-    .user-message, .assistant-message {
-        max-width: 90%;
-        font-size: 14px;
-    }
-
-    #clothe {
-        font-size: 12px;
-        padding: 8px 16px;
-    }
-}
