@@ -11,7 +11,7 @@ from .models import ChatbotConversation, InformationUser
 import base64, json
 
 from .ia_files.pixtral_script import list_clothes
-from .ia_files.chat_assos import query_chat
+from .ia_files.chat_assos import query_chat, make_suggestions
 
 # Vue de login
 def user_login(request):
@@ -51,8 +51,10 @@ def home_2(request):
             return redirect('home')
     else:
         form = ImageUploadForm()
+
+    suggestions = make_suggestions(request.user)
     
-    return render(request, 'Home/home.html', {'form': form, "suggestions":[]})
+    return render(request, 'Home/home.html', {'form': form, "suggestions":suggestions})
 
 @login_required
 def home(request):
@@ -94,13 +96,14 @@ def home(request):
 
                 image.save()
                 return redirect('home')
-        
+    
+    suggestions = make_suggestions(request.user)
 
     return render(request, 'Home/home.html', {
         'image_form': image_form,
         'info_form': info_form,
         'has_information': has_information,
-        'suggestions': [],
+        'suggestions': suggestions,
     })
 
 
