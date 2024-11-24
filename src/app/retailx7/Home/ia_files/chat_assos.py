@@ -196,6 +196,7 @@ def pipeline_chatbot(user_input, messages=[]):
     # Met le prompt dans le LLM
     # messages.append({"role":"user", "content":prompt})
     prompt = make_prompt(user_input)
+    print(prompt)
     chat_response = client.chat.complete(
         model=model,
         messages=[{"role":"user", "content":prompt}]
