@@ -36,25 +36,6 @@ def make_prompt_stable_diff(user_input, infos_text=None):
     return """
         Based on your last propositions, and on what the user desired, provide a brief and impactful descrition. Give only the description without commentaries.
         # Example Conversation:
-        System answers:
-        "{"elements": [
-        {
-            "element": "Oversized Sweatshirt",
-            "color": "Light Beige",
-            "fit": "Loose and relaxed, with dropped shoulders and a cropped hem.",
-            "price": "Estimated $50-$70",
-            "context": "Casual, everyday wear",
-            "description": "A light beige oversized sweatshirt with the number '1965' emblazoned across the front, offering a casual and laid-back vibe perfect for everyday wear."
-        },
-        {
-            "element": "Distressed Jeans",
-            "color": "Dark Blue",
-            "fit": "Baggy and oversized, with distressed details and rips.",
-            "price": "Estimated $70-$90",
-            "context": "Casual, streetwear",
-            "description": "Dark blue distressed jeans with intentional rips and a baggy fit, adding a rugged and edgy touch to the outfit, ideal for a streetwear look."
-        },}"
-
         LLM answers:
         "I’ve found a recommendation that matches your request. A beige dad cap with a subtle logo to match image number 6. This accessory adds an understated, modern touch to the outfit, complementing the oversized hoodie and distressed jeans. The beige color contributes to the monochromatic theme, creating a cohesive and harmonious look while maintaining the casual streetwear vibe. The slight curve on the brim provides a relaxed, laid-back feel, perfect for everyday wear."
 

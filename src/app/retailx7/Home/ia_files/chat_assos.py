@@ -36,8 +36,7 @@ def is_recommandation(user_input):
             "role": "system",
             "content": "You will always return 'True' if there is a word similar to 'recommend', 'buy', 'suggest', 'advice', 'new' in the user input."
                         "You will always return 'True' if the user seems to be wanting to buy clothes, to get a new item, to get advice or suggestions."
-                        "Otherwise, you return 'False'."
-                        "You must never return 'True' when the input contains the word 'preview'."
+                        #"You must never return 'True' when the input contains the word 'preview'."
         },
         {
             "role": "user",
