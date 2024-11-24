@@ -18,20 +18,20 @@
                 <div class="{{ msg.role }}-message">
                     <strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
                     {% if msg.dict_infos %}
-                        <ul style="list-style-type: none; padding: 0; margin: 0;">
+                        <ul id="{% if msg.role == 'assistant' %}assistant-list{% elif msg.role == 'user' %}user-list{% else %}user-list-list{% endif %}" style="list-style-type: none; padding: 0; margin: 0;">
                             {% for clothe in msg.dict_infos %}
                                 {% for key, value in clothe.items %}
                                     {% if key == 'imageUrl' %}
-                                        <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
+                                        <li style="margin: 10px 0; padding: 10px; text-align: center;">
                                             <img src="{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
                                         </li>
                                     {% else %}
                                         {% if key == 'url' %}
-                                            <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                                            <li style="margin: 10px 0; padding: 10px;">
                                                 <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
                                             </li>
                                         {% else %}
-                                            <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                                            <li style="margin: 10px 0; padding: 10px">
                                                 <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
                                             </li>
                                         {% endif %}
@@ -83,17 +83,17 @@
                     for (const [key, value] of Object.entries(clothe)) {
                         if (key === 'imageUrl') {
                             html += `
-                                <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
+                                <li style="margin: 10px 0; padding: 10px; text-align: center;">
                                     <img src="${value}" alt="" style="max-width: 100%; border-radius: 5px;">
                                 </li>`;
                         } else if (key === 'url') {
                             html += `
-                                <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                                <li style="margin: 10px 0; padding: 10px;">
                                     <strong style="color: #007bff;">${key}</strong>: <span style="color: #555;">${value}</span>
                                 </li>`;
                         } else {
                             html += `
-                                <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                                <li style="margin: 10px 0; padding: 10px;">
                                     <strong style="color: #007bff;">${key}</strong>: <span style="color: #555;">${value}</span>
                                 </li>`;
                         }
