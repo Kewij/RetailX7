@@ -54,9 +54,7 @@ Une fois la recommandation faite, il fera appel à un scrapper internet pour all
 
 ### 1.2. Génération d'une preview
 
-Une phrase du type **"Can you generate a preview of the new outfit ?"** permet également à l'utiliateur de demander à son assistant de générer une image ressemblant à l'image modèle, mais en y ajoutant le vêtement recommandé. Cette génération se fait via l'appel de stable diffusion par notre llm.
-
-[détailler]
+Une phrase du type **"Can you generate a preview of the new outfit ?"** permet également à l'utiliateur de demander à son assistant de générer une image ressemblant à l'image modèle, mais en y ajoutant le vêtement recommandé. Cette génération se fait via l'appel de stable diffusion par notre llm. Cf partie 2.4.
 
 ## 2. Aspects techniques
 ### 2.1. Recommandations
