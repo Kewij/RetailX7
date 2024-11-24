@@ -18,7 +18,7 @@
                 <div class="{{ msg.role }}-message">
                     <strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
                     {% if msg.dict_infos %}
-                        <ul id="clothe" style="list-style-type: none; padding: 0; margin: 0;">
+                        <ul id="clothe" style="list-style-type: none;">
                             {% for clothe in msg.dict_infos %}
                                 {% for key, value in clothe.items %}
                                     {% if key == 'imageUrl' %}
