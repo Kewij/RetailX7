@@ -356,7 +356,7 @@ def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
     wardrobe = generate_wardrobe(new_query, user)
     wardrobe = json_to_dataframe(wardrobe, key="elements")
     empty_element = generate_empty_element(new_query)
-    content = json.loads(recommend_from_wardrobe(wardrobe, empty_element))["elements"][0]
+    content = json.loads(recommend_from_wardrobe((wardrobe, empty_element)))["elements"][0]
     desc = content["description"]
     clothe = fetch_from_img_reco(content)
     reco_message = create_reco_message(clothe, desc)
