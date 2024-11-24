@@ -59,7 +59,6 @@ This style guide aims to provide clear and consistent guidelines for writers and
 6.1.2 Evaluate functionality: Bags and belts must align with both the style and the occasion (e.g., a sleek leather briefcase for business).
 6.2 Jewelry
 6.2.1 Jewelry must complement the outfit's tone: delicate chains for formal looks, bold statement pieces for casual or edgy styles.
-6.2.2 Balance proportions—large earrings pair best with minimal necklines, while stacked rings complement shorter sleeves.
 
 7. Footwear Integration
 7.1 Footwear Fit and Style
@@ -85,5 +84,8 @@ This style guide aims to provide clear and consistent guidelines for writers and
 9.2.2 There should always be a large clothing piece such as pants, shirt, jacket, coat listed as an improvement.
 9.2.3 Always suggest at least one top, one bottom and one accessory as an Improvement.
 9.2.4 Example: “The silhouette would benefit from a slimmer pant to offset the bulk of the oversized jacket.”
-9.3 Overall Verdict
-9.3.1 Summarize the outfit’s success, balancing strengths and weaknesses. Example: “The outfit achieves a cohesive, polished streetwear look through clean layering and complementary colors. However, slightly adjusting the proportions of the top and bottom would refine the silhouette.”
+9.3. Switching pieces Suggestions
+9.3.1 Suggest switching up large pieces with something more unique.
+9.3.2 For example, propose a new coat, jacket, shirt, or a new pair of pants.
+9.4 Overall Verdict
+9.4.1 Summarize the outfit’s success, balancing strengths and weaknesses. Example: “The outfit achieves a cohesive, polished streetwear look through clean layering and complementary colors. However, slightly adjusting the proportions of the top and bottom would refine the silhouette.”
