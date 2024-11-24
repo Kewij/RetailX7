@@ -86,6 +86,7 @@ def request_asos(query, maxItems=3):
 	return processed_response
 
 def request_asos_outfit(queries, maxItems=3):
+    print("Début des queries")
     queries = ast.literal_eval(queries)
     outfit = []
     for i, query in enumerate(queries):
