@@ -10,7 +10,7 @@
 </head>
 <body>
     {% if chatbot %}
-        <h1>RelookX</h1>
+        <h1>Chatbot</h1>
         <div id="chat-box">
             <!-- Afficher directement les messages du chatbot -->
             {% for msg in chatbot.message %}
@@ -22,19 +22,13 @@
                             {% for clothe in msg.dict_infos %}
                                 {% for key, value in clothe.items %}
                                     {% if key == 'imageUrl' %}
-                                        <li style="margin: 10px 0; padding: 10px; text-align: center;">
-                                            <img src="{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                        <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
+                                            <img src="https://{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
                                         </li>
                                     {% else %}
-                                        {% if key == 'url' %}
-                                            <li style="margin: 10px 0; padding: 10px;">
-                                                <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
-                                            </li>
-                                        {% else %}
-                                            <li style="margin: 10px 0; padding: 10px">
-                                                <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
-                                            </li>
-                                        {% endif %}
+                                        <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                                            <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
+                                        </li>
                                     {% endif %}
                                 {% endfor %}
                             {% endfor %}
@@ -76,24 +70,19 @@
         
                 var messageElement = document.createElement('div');
                 messageElement.classList.add(msg.role + '-message');
-                messageElement.innerHTML = "<strong>" + capitalizeFirstLetter(msg.role) + ":</strong> " + msg.content;
+                messageElement.innerHTML = "<strong>" + capitalizeFirstLetter(msg.role) + ":</strong> ";
                 let html = '<ul id="clothe" style="list-style-type: none; padding: 0; margin: 0;">';
                 if (msg.dict_infos) {
                     msg.dict_infos.forEach(clothe => {
                     for (const [key, value] of Object.entries(clothe)) {
                         if (key === 'imageUrl') {
                             html += `
-                                <li style="margin: 10px 0; padding: 10px; text-align: center;">
-                                    <img src="${value}" alt="" style="max-width: 100%; border-radius: 5px;">
-                                </li>`;
-                        } else if (key === 'url') {
-                            html += `
-                                <li style="margin: 10px 0; padding: 10px;">
-                                    <strong style="color: #007bff;">${key}</strong>: <span style="color: #555;">${value}</span>
+                                <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
+                                    <img src="https://${value}" alt="" style="max-width: 100%; border-radius: 5px;">
                                 </li>`;
                         } else {
                             html += `
-                                <li style="margin: 10px 0; padding: 10px;">
+                                <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
                                     <strong style="color: #007bff;">${key}</strong>: <span style="color: #555;">${value}</span>
                                 </li>`;
                         }
