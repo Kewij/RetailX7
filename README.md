@@ -102,9 +102,9 @@ Pour la génération d'une preview il a été décidé d'utiliser la webui de st
 L'objectif était d'utiliser l'extention ControlNet de façon à pouvoir obliger l'image générée à correspondre dans une plus grande mesure à la photo fournie par l'utilisateur et de pouvoir régler et déclancher cette génération d'image par des appels pythons. 
 Nous avons réalisé cet objectif en local sur un ordinateur utilisant windows. 
 
-Helas, en voulant porter notre solution vers notre serveur Jango nous avons rencontré un certain nombre de problèmes techniques. 
+Helas, en voulant porter notre solution vers notre serveur Django nous avons rencontré un certain nombre de problèmes techniques. 
 L'installation de stable diffusion nécessite une carte graphique que notre serveur n'a pas. 
 Nous avons alors décidé d'installer stable diffusion sur une des machines des salles informatiques de l'école polytechnique et de nous y connecter en SSH. 
-En créant un Proxy et en utilisant les bons arguments de configuration de la webui il a été possible de faire communiquer le code python, hébergé sur le serveur, et la webui, hébergée sur la machine de l'école. 
+En créant un tunnel ssh et en utilisant les bons arguments de configuration de la webui il a été possible de faire communiquer le code python, hébergé sur le serveur, et la webui, hébergée sur la machine de l'école. 
 
 Cependant, n'ayant pas les droits d'administrateur sur la machine de l'école et certaines extensions de stable diffusion étant assez exigeante quant à la version de python à utiliser, nous n'avons pas réussi à y installer Control Net, ce qui réduit la qualité de nos previews.
