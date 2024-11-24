@@ -24,7 +24,7 @@ class CustomUserAdmin(UserAdmin):
     filter_horizontal = ('images', 'groups', 'user_permissions')  # Makes ManyToManyFields easier to manage
 
     # Add the inline for InformationUser
-    inlines = [InformationUserInline]
+    #inlines = [InformationUserInline]
 
 # Custom admin for Image
 @admin.register(Image)
