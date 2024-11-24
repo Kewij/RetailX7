@@ -10,7 +10,7 @@
 </head>
 <body>
     {% if chatbot %}
-        <h1>Chatbot</h1>
+        <h1>RelookX</h1>
         <div id="chat-box">
             <!-- Afficher directement les messages du chatbot -->
             {% for msg in chatbot.message %}
@@ -23,12 +23,13 @@
                                 {% for key, value in clothe.items %}
                                     {% if key == 'imageUrl' %}
                                         <li style="margin: 10px 0; padding: 10px; text-align: center;">
-                                            <a href="{{ clothe.url }}">
-                                                <img src="{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
-                                            </a>
+                                            <img src="{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
                                         </li>
                                     {% else %}
                                         {% if key == 'url' %}
+                                            <li style="margin: 10px 0; padding: 10px;">
+                                                <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
+                                            </li>
                                         {% else %}
                                             <li style="margin: 10px 0; padding: 10px">
                                                 <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">{{ value }}</span>
@@ -83,9 +84,7 @@
                         if (key === 'imageUrl') {
                             html += `
                                 <li style="margin: 10px 0; padding: 10px; text-align: center;">
-                                    <a href='${clothe["url"]}'>
-                                       <img src="${value}" alt="" style="max-width: 100%; border-radius: 5px;"> 
-                                    </a>
+                                    <img src="${value}" alt="" style="max-width: 100%; border-radius: 5px;">
                                 </li>`;
                         } else if (key === 'url') {
                             html += `
