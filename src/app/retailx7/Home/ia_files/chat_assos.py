@@ -27,7 +27,8 @@ client = Mistral(api_key=api_key)
 
 
 def is_recommandation(user_input):
-    prompt = "Analyze the user's input and determine if they are explicitly requesting outfit recommendations. Avoid any request containing the word 'preview'. Respond with either True or False, based solely on whether the user’s input suggests they want advice or suggestions for outfits. Do not include any punctuation in your response."
+    prompt = """Analyze the user's input and determine if they are explicitly requesting outfit recommendations. 
+    Respond with either True or False, based solely on whether the user’s input suggests they want advice or suggestions for outfits. Do not include any punctuation in your response."""
     cur_messages = [
         {"role": "system", "content": prompt},
         {"role":"user", "content":user_input}
@@ -56,7 +57,10 @@ def make_prompt(user_input, infos_text=None):
         """
     else:
         return f"""
-        You are a personal fashion advisor. Your role is to provide customized fashion recommendations to users based on their preferences, occasion, budget and personal information. Your response must only include a list of references for items that can be searched on a shopping website, formatted as a list within square brackets []. Based on the provided information, include the gender in your references if it is available.
+        You are a personal fashion advisor. 
+        Your role is to provide customized fashion recommendations to users based on their preferences, occasion, budget and personal information. 
+        Your response must only include a list of references for items that can be searched on a shopping website, formatted as a list within square brackets []. 
+        Based on the provided information, include the gender in your references if it is available.
 
         # Example Conversation:
         User Input:
@@ -199,17 +203,14 @@ def retrieve_information(user):
         print("Anonymous user.")
         return {}
     
-def make_suggestions(user, nb_suggestions=3):
+def make_suggestions(user, nb_suggestions=1):
     suggestions = []
     user_infos = retrieve_information(user)
     user_infos = transform_dict_llm(user_infos)
     new_query = "Give me some nice oufits recommandations."
 
     while len(suggestions) < nb_suggestions:
-        if user.user_images.exists():
-            _, clothes = pipeline_reco_from_wardrobe(new_query, user, user_infos, [])
-        else:
-            _, clothes = pipeline_chatbot(new_query, user_infos, [])
+        _, clothes = pipeline_chatbot(new_query, user_infos, [])
         suggestions += clothes
     
     return suggestions
