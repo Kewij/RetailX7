@@ -103,6 +103,13 @@ Nous souhaitions pouvoir générer une image répondant aux attentes de l'utilis
 
 En effet, nous avons essayé deux technologies : ControlNet et Advisalier. La première permet de bien correspondre à la position et d'aider Stable Diffusion à positionner correctement les éléments proposés par le LLM, tandis qu'Advisalier permet d'obtenir un rendu avec un visage de meilleure qualité.
 
+Comme montré sur l'exemple ci dessous, à partir d'une image de l'utilisateur, image du haut, ControlNet extrait une pose, image du dessous, et tente de faire correspondre son output à celle ci. 
+En donnant comme prompt la description des vêtements générée par Pixtral ainsi que la description du vêtement suggéré, ici un bonnet rouge, on arrive à réaliser une prévisualisation convainquante du nouvel outfit.
+
+![Image de base](./examples/img1.jpg)
+![Image génére par Stable Diffusion et ControlNet](./examples/Stable_demo.png)
+![Pose utilisée pour fit l'image](./examples/Stable_demo_open_pose.png)
+
 Ainsi, un prompt utilisateur est censé déclencher la génération d'une image à l'aide de ces technologies, en y ajoutant un contexte grâce au LLM.
 
 En local, nous avons réussi à implémenter la génération d'images avec Advisalier et ControlNet.
