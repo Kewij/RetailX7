@@ -29,18 +29,18 @@
 
 /* User Message */
 .user-message {
-    background: linear-gradient(135deg, #e0eaff, #c4ddff);
-    color: #003580;
+    background-color: #e9ecef;
     align-self: flex-end;
+    color: #495057;
     border: 1px solid #ced4da;
     animation: slideInRight 0.3s ease;
 }
 
 /* Assistant Message */
 .assistant-message {
-    background: linear-gradient(135deg, #f1ffe0, #ddffcb);
-    color: #22543d;
+    background-color: #d1ecf1;
     align-self: flex-start;
+    color: #0c5460;
     border: 1px solid #bee5eb;
     animation: slideInLeft 0.3s ease;
 }
@@ -64,10 +64,3 @@
     background-color: #0056b3;
 }
 
-button#send-button {
-    transition: transform 0.2s ease-in-out, background-color 0.3s ease;
-}
-
-button#send-button:hover {
-    transform: scale(1.1);
-}
