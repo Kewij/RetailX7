@@ -68,12 +68,12 @@
         
                 var messageElement = document.createElement('div');
                 messageElement.classList.add(msg.role + '-message');
-                messageElement.innerHTML = "<strong>" + capitalizeFirstLetter(msg.role) + ":</strong> "
-                let html = '<ul style="list-style-type: none; padding: 0; margin: 0;">';
+                messageElement.innerHTML = "<strong>" + capitalizeFirstLetter(msg.role) + ":</strong> ";
+                let html = '<ul id="clothe" style="list-style-type: none; padding: 0; margin: 0;">';
                 if (msg.dict_infos) {
                     msg.dict_infos.forEach(clothe => {
                     for (const [key, value] of Object.entries(clothe)) {
-                        if (key === 'image') {
+                        if (key === 'imageUrl') {
                             html += `
                                 <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
                                     <img src="${value}" alt="" style="max-width: 100%; border-radius: 5px;">
