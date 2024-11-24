@@ -10,7 +10,7 @@
 </head>
 <body>
     {% if chatbot %}
-        <h1>Chatbot</h1>
+        <h1 id="relookx">RelookX</h1>
         <div id="chat-box">
             <!-- Afficher directement les messages du chatbot -->
             {% for msg in chatbot.message %}
@@ -18,7 +18,7 @@
                 <div class="{{ msg.role }}-message">
                     <strong>{{ msg.role|capfirst }}:</strong> {{ msg.content }}
                     {% if msg.dict_infos %}
-                        <ul style="list-style-type: none; padding: 0; margin: 0;">
+                        <ul id="clothe" style="list-style-type: none; padding: 0; margin: 0;">
                             {% for clothe in msg.dict_infos %}
                                 {% for key, value in clothe.items %}
                                     {% if key == 'imageUrl' %}
