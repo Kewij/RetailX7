@@ -15,6 +15,7 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 from django.conf import settings
 from Home.models import Image, InformationUser
+from pixtral_script import pipeline_reco_from_wardrobe
 
 model = "mistral-small-latest"
 api_key = os.environ["MISTRAL_API_KEY"]
@@ -253,9 +254,10 @@ def transform_dict_llm(input_dict):
 def query_chat(new_query, user, messages=[]):
     user_infos = retrieve_information(user)
     infos_text = transform_dict_llm(user_infos)
-    print(infos_text)
     bool_reco = is_recommandation(new_query)
-    if bool_reco == "True":
+    if bool_reco == "True" and user.user_images.exists():
+        messages = pipeline_reco_from_wardrobe(new_query, user, infos_text, messages)
+    elif bool_reco == "True":
         messages = pipeline_chatbot(new_query, infos_text, messages)
     else:
         messages.append({"role": "user", "content": new_query})

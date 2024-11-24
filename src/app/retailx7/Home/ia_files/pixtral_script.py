@@ -12,6 +12,7 @@ api_key = os.environ["MISTRAL_API_KEY"]
 
 # Model specification
 model = "mistral-large-latest"
+small_model = "mistral-small-latest"
 
 # Initialize the Mistral client
 client = Mistral(api_key=api_key)
@@ -197,4 +198,121 @@ def recommend_from_wardrobe(wardrobe, element = empty_element):
 def fetch_from_img_reco(recommandations):
     query = recommandations["fit"] + " " + recommandations["color"] + " " + recommandations["element"]
     clothe = request_asos(query, maxItems=1)
-    return {clothe["imageUrl"]: clothe["url"]}
+    return clothe
+
+def generate_wardrobe(new_query, user):
+    prompt = """
+    The user is asking you for an outfit or clothing suggestion. They may optionally indicate the number of an image they have uploaded for you to use as a reference.
+
+    Your task is straightforward:
+    1. If the user explicitly mentions an image number (e.g., "Use image 3"), return only that number as an integer.
+    - Example: 3
+    2. If the user does not mention any image or does not provide a clear number, return -1.
+
+    You must **only** return the numerical value corresponding to the image number or -1. No additional information or text is needed in your response.
+
+    **Examples:**
+    - Input: "Can you use image 2 to suggest an outfit?"
+    Output: 2
+    - Input: "I’d like a suggestion but without using my images."
+    Output: -1
+    - Input: "Use photo 5 for my professional outfit."
+    Output: 5
+    - Input: "Suggest an outfit for winter."
+    Output: -1
+    """
+
+    message = {"role": "system", "content": prompt}
+    img = int(client.chat.complete(
+        model="mistral-small-latest",
+        messages=[message, {"role": "user", "content": new_query}]
+    ).choices[0].message.content)
+    print(f"Image choisie : {img}")
+    images = user.user_images.all()
+    if img == -1:
+        # Wardrobe complète
+        wardrobe = []
+        for image in images:
+            elements = image.description.get("elements", [])  # Récupérer "elements" ou une liste vide
+            if isinstance(elements, list):  # Vérifier que c'est une liste
+                wardrobe.extend(elements)  # Ajouter les éléments à la liste globale
+    else:
+        # Choix d'un outfit spécifique
+        wardrobe = images[img-1].description["elements"]
+
+    return wardrobe
+
+def generate_empty_element(new_query):
+    prompt = """
+    The user is asking you about a specific clothing item or providing details for an outfit suggestion. Your task is to extract the relevant information from their input and return it as a dictionary with the following keys:
+    - "element": The type of clothing item requested (e.g., pants, t-shirt, jacket, etc.).
+    - "color": The color of the clothing item, if specified.
+    - "fit": The fit or style of the clothing item (e.g., slim, oversized, tailored), if specified.
+    - "price": The price or budget mentioned by the user, if specified.
+    - "context": The situation or context for which the clothing item is intended (e.g., casual, professional, fitness, party), if specified.
+    - "description": Any additional description of the clothing item provided by the user.
+
+    For any key where the user does not provide enough information, set the value to `None`.
+
+    **Examples:**
+    1. Input: "I need a slim-fit black shirt for a formal event."
+    Output: {
+        "element": "shirt",
+        "color": "black",
+        "fit": "slim-fit",
+        "price": None,
+        "context": "formal",
+        "description": None
+    }
+
+    2. Input: "Can you suggest a comfortable pair of blue jeans under $50 for casual wear?"
+    Output: {
+        "element": "jeans",
+        "color": "blue",
+        "fit": "comfortable",
+        "price": 50,
+        "context": "casual",
+        "description": None
+    }
+
+    3. Input: "I’d like a red dress for a party, something elegant."
+    Output: {
+        "element": "dress",
+        "color": "red",
+        "fit": None,
+        "price": None,
+        "context": "party",
+        "description": "elegant"
+    }
+
+    4. Input: "Just looking for some winter boots."
+    Output: {
+        "element": "boots",
+        "color": None,
+        "fit": None,
+        "price": None,
+        "context": "winter",
+        "description": None
+    }
+
+    Respond strictly with the dictionary in JSON-like format. Do not include any other text or explanation.
+    """
+
+    message = {"role": "system", "content": prompt}
+    empty_element = client.chat.complete(
+        model="mistral-small-latest",
+        messages=[message, {"role": "user", "content": new_query}],
+        response_format={
+            "type": "json_object",
+        }
+    ).choices[0].message.content
+    empty_element = json.loads(empty_element)
+    empty_element = {key: (None if value == "None" else value) for key, value in empty_element.items()}
+    return empty_element
+
+def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
+    wardrobe = generate_wardrobe(new_query, user)
+    empty_element = generate_empty_element(new_query, messages)
+    content = recommend_from_wardrobe(wardrobe, empty_element)
+    clothe = fetch_from_img_reco(content)
+    return clothe
