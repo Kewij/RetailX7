@@ -10,7 +10,7 @@ from .models import ChatbotConversation, InformationUser
 
 import base64, json
 
-from .ia_files.pixtral_script import list_clothes, recommend_from_wardrobe
+from .ia_files.pixtral_script import list_clothes
 from .ia_files.chat_assos import query_chat
 
 # Vue de login
@@ -29,17 +29,7 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('login')  # Redirection vers la page de login après logout
-
-def generate_suggestion(request):
-    if request.user.is_authenticated:
-        # Récupère toutes les images de l'utilisateur connecté
-        images = request.user.user_images.all().order_by('-id')
-    else:
-        images = []
-
-    recommend_from_wardrobe(images)
-
-    
+   
 
 # Page d'accueil
 @login_required
