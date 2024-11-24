@@ -1,5 +1,4 @@
-
-/* Chatbox CSS */
+/* chatbox.css */
 
 /* General Styles for the Chatbox */
 .chat-container {
@@ -53,7 +52,7 @@
     padding: 10px 20px;
     font-size: 14px;
     color: #ffffff;
-    background-color: #ffffff;
+    background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
