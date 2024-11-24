@@ -54,7 +54,7 @@ def home_2(request):
 
     #suggestions = make_suggestions(request.user)
     
-    return render(request, 'Home/home.html', {'form': form, "suggestions":suggestions})
+    return render(request, 'Home/home.html', {'form': form, "suggestions":[]})
 
 @login_required
 def home(request):
@@ -103,7 +103,7 @@ def home(request):
         'image_form': image_form,
         'info_form': info_form,
         'has_information': has_information,
-        'suggestions': suggestions,
+        'suggestions': [],
     })
 
 
