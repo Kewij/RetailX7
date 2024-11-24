@@ -52,7 +52,7 @@ def home_2(request):
     else:
         form = ImageUploadForm()
 
-    suggestions = make_suggestions(request.user)
+    #suggestions = make_suggestions(request.user)
     
     return render(request, 'Home/home.html', {'form': form, "suggestions":suggestions})
 
@@ -97,7 +97,7 @@ def home(request):
                 image.save()
                 return redirect('home')
     
-    suggestions = make_suggestions(request.user)
+    #suggestions = make_suggestions(request.user)
 
     return render(request, 'Home/home.html', {
         'image_form': image_form,
