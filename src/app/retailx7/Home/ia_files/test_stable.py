@@ -18,6 +18,22 @@ def generate_outfit_preview(prompt, negative_prompt):
             "n_iter": 1,
             "batch_size": 1,
 
+            "alwayson_scripts": {
+                    "Refiner": {
+                    "args": [
+                        True,
+                        "sd_xl_refiner_1.0",
+                        0.5
+                    ]
+                },
+                "Adetailer": {
+                    "args": [
+                        True,
+                        "face_yolov8n.pt"
+                    ]
+                }
+            },
+
             "override_settings": {
                 "sd_model_checkpoint": "realisticVisionV60B1_v51HyperVAE.safetensors [f47e942ad4]", 
             },
