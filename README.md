@@ -88,6 +88,12 @@ Malheureusement, les tâches de fine-tuning n'étaient pas réalisables sur la p
 
 ### 2.3. Site internet et serveurs
 
+![Architecture des services](https://github.com/Kewij/RetailX7/schema.png)
+
+Le site est héberger sur un serveur distant sans carte graphique, entièrement en Django, en version test. Il se connect aux différents services pour répondre aux demanders : mistral, api asos, serveur de stable-diffusion.
+
+En effet, le serveur ne permettait pas disposer du stable-diffusion en local, il a ainsi été mis sur un autre serveur (celui de polytechnique), et un transfert de port entre le serveur de la webapp et celui du stable-diffusion a été réalisé avec le protocole ssh en utilisant des identifiants de polytechnique.
+
 ### 2.4. Stable diffusion
 
 Pour la génération d'une preview il a été décidé d'utiliser la webui de stable diffusion.
