@@ -5,7 +5,7 @@ import json
 import time
 import os
 
-webui_server_url = 'http://localhost:9090'#129.104.253.38
+webui_server_url = 'http://localhost:9090'
 
 out_dir = 'api_out'
 out_dir_t2i = os.path.join(out_dir, 'txt2img')
@@ -30,14 +30,36 @@ def decode_and_save_base64(base64_str, save_path):
 
 
 def call_api(api_endpoint, **payload):
+    # Convert the payload to JSON
     data = json.dumps(payload).encode('utf-8')
+
+    # Construct the full URL
+    url = f'{webui_server_url}/{api_endpoint}'
+
+    # Create the request
     request = urllib.request.Request(
-        f'{webui_server_url}/{api_endpoint}',
-        headers={'Content-Type': 'application/json'},
+        url,
+        headers={
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'  # Add Accept header for APIs expecting it
+        },
         data=data,
+        method='POST'  # Explicitly define the method
     )
-    response = urllib.request.urlopen(request)
-    return json.loads(response.read().decode('utf-8'))
+
+    # Send the request and handle errors
+    try:
+        with urllib.request.urlopen(request) as response:
+            # Parse and return the response JSON
+            return json.loads(response.read().decode('utf-8'))
+    except urllib.error.HTTPError as e:
+        print(f"HTTPError: {e.code} {e.reason}")
+        print(f"Response: {e.read().decode('utf-8')}")
+        raise
+    except urllib.error.URLError as e:
+        print(f"URLError: {e.reason}")
+        raise
+
 
 
 def call_txt2img_api(**payload):
