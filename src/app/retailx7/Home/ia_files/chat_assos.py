@@ -27,15 +27,25 @@ client = Mistral(api_key=api_key)
 
 
 def is_recommandation(user_input):
-    prompt = """Analyze the user's input and determine if they are explicitly requesting outfit recommendations. 
-    Respond with either True or False, based solely on whether the user’s input suggests they want advice or suggestions for outfits. Do not include any punctuation in your response."""
-    cur_messages = [
-        {"role": "system", "content": prompt},
-        {"role":"user", "content":user_input}
+    messages = [
+        {
+            "role": "system",
+            "content": "Return the answer as bool, either 'True' or 'False' but nothing else, and not more than one word."
+        },
+        {
+            "role": "system",
+            "content": "You will always return 'True' if there is a word similar to 'recommend', 'buy', 'suggest', 'advice', 'new' in the user input."
+                        "You will always return 'True' if the user seems to be wanting to buy clothes, to get a new item, to get advice or suggestions."
+        },
+        {
+            "role": "user",
+            "content": user_input
+        }
     ]
+    
     chat_bool = client.chat.complete(
         model=model,
-        messages=cur_messages
+        messages=messages
     )
     bool_reco = chat_bool.choices[0].message.content
     return bool_reco
