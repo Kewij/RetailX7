@@ -17,6 +17,21 @@ small_model = "mistral-small-latest"
 # Initialize the Mistral client
 client = Mistral(api_key=api_key)
 
+def json_to_dataframe(json_data: Union[str, dict], key: str = None) -> pd.DataFrame:
+    # If json_data is a string, parse it into a dictionary
+    if isinstance(json_data, str):
+        json_data = json.loads(json_data)
+    
+    # If a key is provided, extract the list of records from the JSON object
+    if key is not None:
+        data = json_data[key]
+    else:
+        data = json_data
+    
+    # Convert the list of records to a pandas DataFrame
+    df = pd.DataFrame(data)
+    
+    return df
 
 def img_to_base64_path(image_path):
     """Input : image_path (str) : path to the image file
@@ -345,6 +360,7 @@ def create_reco_message(outfit, desc):
 
 def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
     wardrobe = generate_wardrobe(new_query, user)
+    wardrobe = json_to_dataframe(wardrobe, key="elements")
     empty_element = generate_empty_element(new_query)
     content = recommend_from_wardrobe(wardrobe, empty_element)["elements"]
     desc = content["description"]
