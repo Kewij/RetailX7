@@ -203,8 +203,8 @@ def generate_wardrobe(new_query, user):
     The user is asking you for an outfit or clothing suggestion. They may optionally indicate the number of an image they have uploaded for you to use as a reference.
 
     Your task is straightforward:
-    1. If the user explicitly mentions an image number (e.g., "Use image 3"), return only that number as an integer.
-    - Example: 3
+    1. If the user explicitly mentions an image number (e.g., "Use image 1"), return only that number as an integer.
+    - Example: 1
     2. If the user does not mention any image or does not provide a clear number, return -1.
 
     You must **only** return the numerical value corresponding to the image number or -1. No additional information or text is needed in your response.
@@ -216,8 +216,11 @@ def generate_wardrobe(new_query, user):
     Output: -1
     - Input: "Use photo 5 for my professional outfit."
     Output: 5
+    - Input: "can you recommend a clothe that goes with image 1?"
+    Output: 1
     - Input: "Suggest an outfit for winter."
     Output: -1
+
     """
 
     message = {"role": "system", "content": prompt}
@@ -229,7 +232,7 @@ def generate_wardrobe(new_query, user):
     images = user.user_images.all()
     if img != -1:
         print("Description choisie :", images[img].description["elements"])
-    if img == -1:
+    if img is None:
         # Wardrobe complète
         wardrobe = []
         for image in images:
