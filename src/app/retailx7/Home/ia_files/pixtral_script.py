@@ -236,9 +236,9 @@ def generate_wardrobe(new_query, user):
     ).choices[0].message.content)
     print(f"Image choisie : {img}")
     images = user.user_images.all()
-    if img != -1:
-        print("Description choisie :", images[img].description["elements"])
-    if img is None:
+    if img > 1:
+        print("Description choisie :", images[img-1].description["elements"])
+    if img == -1:
         # Wardrobe complète
         wardrobe = []
         for image in images:
@@ -356,7 +356,7 @@ def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
     wardrobe = generate_wardrobe(new_query, user)
     wardrobe = json_to_dataframe(wardrobe, key="elements")
     empty_element = generate_empty_element(new_query)
-    content = json.loads(recommend_from_wardrobe(wardrobe, empty_element))["elements"][0]
+    content = json.loads(recommend_from_wardrobe((wardrobe, empty_element)))["elements"][0]
     desc = content["description"]
     clothe = fetch_from_img_reco(content)
     reco_message = create_reco_message(clothe, desc)
@@ -367,4 +367,4 @@ def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
         messages=messages,
     ).choices[0].message.content
     messages.append({"role": "assistant", "content": reco_response, "dict_infos": clothe})
-    return messages
+    return messages, clothe

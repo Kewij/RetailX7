@@ -154,7 +154,7 @@ def pipeline_chatbot(user_input, infos_text=None, messages=[]):
     )
     messages.append({"role": "assistant", "content": chat_response.choices[0].message.content, "dict_infos" : outfit})
     
-    return messages
+    return messages, outfit
 
 def transform_dict_llm(input_dict):
     if input_dict == {}:
@@ -170,9 +170,9 @@ def query_chat(new_query, user, messages=[]):
     bool_reco = is_recommandation(new_query)
     bool_preview_outfit = is_generate_outfit(new_query)
     if bool_reco == "True" and user.user_images.exists():
-        messages = pipeline_reco_from_wardrobe(new_query, user, infos_text, messages)
+        messages, _ = pipeline_reco_from_wardrobe(new_query, user, infos_text, messages)
     elif bool_reco == "True":
-        messages = pipeline_chatbot(new_query, infos_text, messages)
+        messages, _ = pipeline_chatbot(new_query, infos_text, messages)
     elif bool_preview_outfit == "True":
         messages = pipeline_preview_outfit(new_query, infos_text, messages)
     else:
@@ -198,3 +198,18 @@ def retrieve_information(user):
     else:
         print("Anonymous user.")
         return {}
+    
+def make_suggestions(user, nb_suggestions=3):
+    suggestions = []
+    user_infos = retrieve_information(user)
+    user_infos = transform_dict_llm(user_infos)
+    new_query = "Give me some nice oufits recommandations."
+
+    while len(suggestions) < nb_suggestions:
+        if user.user_images.exists():
+            _, clothes = pipeline_reco_from_wardrobe(new_query, user, user_infos, [])
+        else:
+            _, clothes = pipeline_chatbot(new_query, user_infos, [])
+        suggestions += clothes
+    
+    return suggestions

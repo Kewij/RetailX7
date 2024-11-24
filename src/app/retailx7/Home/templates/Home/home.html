@@ -34,7 +34,9 @@
             <div class="image-container">
                 {% for image in suggestions %}
                 <div class="image-item">
-                    <img src="{{ image.image.url }}" alt="{{ image.description }}">
+                    <a href="https://www.asos.com/us/{{image.url}}">
+                        <img src="https://{{ image.imageUrl }}">
+                    </a>
                 </div>
                 {% endfor %}
             </div>
