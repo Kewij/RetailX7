@@ -7,6 +7,7 @@ import os
 from mistralai import Mistral
 import json
 import functools
+import requests
 
 import numpy as np
 from PIL import Image as PILImage
@@ -105,25 +106,46 @@ def scrap_asos_outfit(queries, maxItems=3):
         outfit += clothe
     return outfit
 
+def request_asos(query, maxItems=3):
+    
+	url = "https://asos2.p.rapidapi.com/products/v2/list"
+
+	querystring = {"store":"US","offset":"0","q": query,"limit": str(maxItems), "country":"US","sort":"freshness","currency":"USD","sizeSchema":"US","lang":"en-US"}
+
+	headers = {
+		"x-rapidapi-key": "7c2a2e3244msh805418e285d23cbp1faaa8jsn691342a23625",
+		"x-rapidapi-host": "asos2.p.rapidapi.com"
+	}
+
+	response = requests.get(url, headers=headers, params=querystring)
+
+	response = response.json()
+	response = response["products"]
+
+	list_keys = ["name", "url", "price", "imageUrl", "brandName", "price"]
+	processed_response = []
+	for product in response:
+		processed_product = {}
+		for key in list_keys:
+			processed_product[key] = product[key]
+		processed_product["price"] = processed_product["price"]["current"]["text"]
+		processed_response.append(processed_product)
+	return processed_response
+
+def request_asos_outfit(queries, maxItems=3):
+    queries = ast.literal_eval(queries)
+    outfit = []
+    for i, query in enumerate(queries):
+        clothe = request_asos(query, maxItems)
+        outfit += clothe
+    return outfit
+
 def create_first_message(outfit):
     return f"""
-    Here are your recommandations :
+    Here are your recommendations to keep in memory:
     {outfit}
-    Summarize the different items mentioned by the user in the form of bullet points. 
-    Each bullet point must include relevant details about the respective item.
-
-    # Example of response:
-    'Introduction to the response'
-    - Lightweight denim jacket
-        - relevant details
-    - Relaxed-fit cotton T-shirt
-        - relevant details
-    - Slim-fit joggers
-        - relevant details
-    - White sneakers
-        - relevant details
+    Respond to the user by confirming that you have relevant recommendations. Do not explicitly reveal the details of the recommendations.
     """
-
 
 def save_outfit_images(outfit):
     """
@@ -181,7 +203,12 @@ def pipeline_chatbot(user_input, messages=[]):
     # Récupère et process les outfits donnés par le LLM
     queries = chat_response.choices[0].message.content
     print(queries)
+    """
+    # Pour le scrap lent
     outfit = scrap_asos_outfit(queries, maxItems=1)
+    """
+    # Pour le scrap rapide
+    outfit = request_asos_outfit(queries, maxItems=1)
     outfit = save_outfit_images(outfit)
     # Créé et envoie un message à envoyer au user
     message_outfit = create_first_message(json.dumps(outfit, indent=4))
