@@ -16,7 +16,7 @@ def callback_generate_outfit_preview(prompt):
     return image
 
 def is_generate_outfit(user_input):
-    prompt = "Analyze the user's input and determine if they are explicitly requesting outfit generation. Respond with either True or False, based solely on whether the user’s input suggests they want to genrate an outfit. Do not include any punctuation in your response."
+    prompt = "Analyze the user's input and determine if they are explicitly requesting a preview of an outfit. Respond with either True or False, based solely on whether the user’s input suggests they want to genrate an outfit. Do not include any punctuation in your response."
     cur_messages = [
         {"role": "system", "content": prompt},
         {"role":"user", "content":user_input}
