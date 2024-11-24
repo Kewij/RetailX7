@@ -74,6 +74,7 @@ Un workflow particulier a été développé pour arriver à plus de personnalisa
 C'est cet élément final qui sera renvoyé à l'utilisateur, la plupart des étapes étant invisibles du point de vue du front-end. Ceci permet au modèle de prendre en compte le contexte, l'esprit, le style des tenues et de proposer des suggestions argumentée et justifiés pour les changer.
 
 Voir le fichier **workflow_example.jpg** pour visualiser chaque étape.
+![Workflow](./workflow_example.jpg)
 
 ### 2.2. Fine-tuning
 
@@ -88,4 +89,22 @@ Malheureusement, les tâches de fine-tuning n'étaient pas réalisables sur la p
 
 ### 2.3. Site internet et serveurs
 
+![Architecture des services](./schema.png)
+
+Le site est héberger sur un serveur distant sans carte graphique, entièrement en Django, en version test. Il se connect aux différents services pour répondre aux demanders : mistral, api asos, serveur de stable-diffusion.
+
+En effet, le serveur ne permettait pas disposer du stable-diffusion en local, il a ainsi été mis sur un autre serveur (celui de polytechnique), et un transfert de port entre le serveur de la webapp et celui du stable-diffusion a été réalisé avec le protocole ssh en utilisant des identifiants de polytechnique.
+
 ### 2.4. Stable diffusion
+
+Pour la génération d'une preview il a été décidé d'utiliser la webui de stable diffusion.
+
+L'objectif était d'utiliser l'extention ControlNet de façon à pouvoir obliger l'image générée à correspondre dans une plus grande mesure à la photo fournie par l'utilisateur et de pouvoir régler et déclancher cette génération d'image par des appels pythons. 
+Nous avons réalisé cet objectif en local sur un ordinateur utilisant windows. 
+
+Helas, en voulant porter notre solution vers notre serveur Jango nous avons rencontré un certain nombre de problèmes techniques. 
+L'installation de stable diffusion nécessite une carte graphique que notre serveur n'a pas. 
+Nous avons alors décidé d'installer stable diffusion sur une des machines des salles informatiques de l'école polytechnique et de nous y connecter en SSH. 
+En créant un Proxy et en utilisant les bons arguments de configuration de la webui il a été possible de faire communiquer le code python, hébergé sur le serveur, et la webui, hébergée sur la machine de l'école. 
+
+Cependant, n'ayant pas les droits d'administrateur sur la machine de l'école et certaines extensions de stable diffusion étant assez exigeante quant à la version de python à utiliser, nous n'avons pas réussi à y installer Control Net, ce qui réduit la qualité de nos previews.
