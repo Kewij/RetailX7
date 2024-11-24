@@ -44,7 +44,7 @@ def make_prompt_stable_diff(user_input, infos_text=None):
         
 
         LLM answers:
-        "A beige dad cap, beige oversized sweatshirt, distressed dark blue jeans"
+        "A beige dad cap"
 
         #
 
@@ -62,6 +62,7 @@ def add_prompt_for_stable_diff(prompt, infos_text=None):
 def pipeline_preview_outfit(user_input, infos_text=None, messages=[]):
     # Met le prompt dans le LLM
     # messages.append({"role":"user", "content":prompt})
+    print("="*10)
     prompt = make_prompt_stable_diff(user_input, infos_text)
     print(prompt)
     chat_response = client.chat.complete(
@@ -81,6 +82,6 @@ def pipeline_preview_outfit(user_input, infos_text=None, messages=[]):
     image_instance = ImageGenere.objects.create(image=image_file)
     image_url = "devops.tlapp.net" + image_instance.image.url
     messages.append({"role":"user", "content":user_input})
-    messages.append({"role": "assistant", "content": "This the preview", "dict_infos" : [{"imageUrl" : image_url}]})
+    messages.append({"role": "assistant", "content": "This is the preview", "dict_infos" : [{"imageUrl" : image_url}]})
     
     return messages
