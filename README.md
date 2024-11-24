@@ -45,6 +45,8 @@ Un workflow particulier a été développé pour arriver à plus de personnalisa
 
 C'est cet élément final qui sera renvoyé à l'utilisateur, la plupart des étapes étant invisibles du point de vue du front-end. Ceci permet au modèle de prendre en compte le contexte, l'esprit, le style des tenues et de proposer des suggestions argumentée et justifiés pour les changer.
 
+Voir le fichier **workflow_example.jpg** pour visualiser chaque étape.
+
 ### 2.2. Fine-tuning
 
 Le workflow décrit précédemment est relativement coûteux (~30s pour une suggestion).
