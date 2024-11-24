@@ -23,7 +23,7 @@
                                 {% for key, value in clothe.items %}
                                     {% if key == 'imageUrl' %}
                                         <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
-                                            <img src="https://{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                            <img src="http://{{ value }}" alt="" style="max-width: 100%; border-radius: 5px;">
                                         </li>
                                     {% else %}
                                         {% if key == 'url' %}
@@ -84,7 +84,7 @@
                         if (key === 'imageUrl') {
                             html += `
                                 <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
-                                    <img src="https://${value}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                    <img src="http://${value}" alt="" style="max-width: 100%; border-radius: 5px;">
                                 </li>`;
                         } else if (key === 'url') {
                             html += `
