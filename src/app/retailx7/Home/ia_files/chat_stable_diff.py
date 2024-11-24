@@ -82,7 +82,7 @@ def pipeline_preview_outfit(user_input, infos_text=None, messages=[]):
     # Pour le scrap rapide
     image_data = callback_generate_outfit_preview(queries)
     image_file = ContentFile(image_data, name="generated_image.png") 
-    image_instance = ImageGenere.objects.create(image=image)
+    image_instance = ImageGenere.objects.create(image=image_file)
     image_url = image_instance.image.url
     messages.append({"role": "assistant", "content": "This the preview", "dict_infos" : [{"imageUrl" : image_url}]})
     
