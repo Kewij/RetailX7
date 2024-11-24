@@ -44,23 +44,27 @@ def img_to_base64_path(image_path):
     
     return image_base64
 
-def list_clothes(image_base64): 
+def list_clothes(args): 
+    image_base64 = args
+    with open("./guides/desc_guide.txt", "r") as f:
+        guide = f.read()
+        
     # Define the messages for the chat API
     messages = [
         {
             "role": "system",
             "content": "Return the answer in a JSON object with the next structure: "
-                    "{\"elements\": [{\"element\": \"some name of element1\", "
+                    "{\"elements\": [{\"element\": \"some name for element1\", "
                     "\"color\": \"the color of element1\", "
-                    "\"fit\": \"the fit of element1 (baggy, slim...)\", "
+                    "\"fit\": \"the fit, shape of element1. Be concise.\", "
                     "\"price\": \"some number, estimated price of element1\", "
-                    "\"context\": \"one word form this list : casual, formal, athletic, office-ready, streetwear, fashion, luxury\", "
-                    "\"description\": \"a description of element1, emphasizing on the vibe of the piece\"}, "
-                    "{\"element\": \"some name of element2\", ...}]}"
+                    "\"context\": \"a word describing the occasion, mood or functionality of the piece\", "
+                    "\"description\": \"a description of element1, emphasizing on the vibe of the piece and that encapsulates the precedent variables\"}, "
+                    "{\"element\": \"some name for element2\", ...}]}"
         },
         {
-            "role": "user",
-            "content": "Describe each clothing piece that this person is wearing using keywords."
+            "role": "system",
+            "content": f"You are a fashion critique, neutral and objective.\n\n {guide} \n\n You are presented with an image of an outfit, describe each of the elements thanks to your expertise "
         },
         {
             "role": "user",
@@ -77,6 +81,7 @@ def list_clothes(image_base64):
     chat_response = client.chat.complete(
         model="pixtral-12b-2409",
         messages=messages,
+        temperature=0.4,
         response_format={
             "type": "json_object",
         }
@@ -87,83 +92,45 @@ def list_clothes(image_base64):
     
     return content
 
-def recommend_from_image(image_base64, description=None):
-    element = {"element":None, "color":None, "fit":None, "price":None, "context":None, "description":None}
+def process_critique(args):
+    wardrobe, model = args
+    with open("./guides/critique_guide.txt", "r") as f:
+        guide = f.read()
+    
+    chat_response = client.chat.complete(
+        model=f"mistral-{model}-latest",
+        messages=[
+            {"role": "system", "content": f"As a 'Fashion Critique', your mission is to help relook people. \n\n {guide} \n\n You are given a description of items in an outfit. Give a critique of the outfit, outlining the general vibe, how the pieces work together and what could be improved."},
+            {"role": "user", "content": '-'+'\n-'.join(wardrobe['description'])},
+        ],
+        temperature=0.2,
+        max_tokens=2048
+    )
+    result = chat_response.choices[0].message.content
+
+    return result
+
+def recommend_item(args):
+    critique, color_rule, piece_rule, element, model = args  
+    image_base64 = args
+    with open("./guides/desc_guide.txt", "r") as f:
+        guide = f.read()
     # Define the messages for the chat API
     messages = [
         {
             "role": "system",
             "content": "Return the answer in a JSON object with the next structure: "
-                    "{\"element\": \"a clothing piece that is not in the original image\", "
-                    "\"color\": \"color of this piece\", "
-                    "\"fit\": \"fit of this piexe (baggy, slim...)\", "
-                    "\"price\": \"some number, estimated price of the piece\", "
-                    "\"context\": \"one word from this list : casual, formal, athletic, office-ready, streetwear, fashion, luxury\", "
-                    "\"description\": \"a short description of the recommended piece\"}"
+                    "{\"elements\": [{\"element\": \"some short name for element1\", "
+                    "\"color\": \"the color of element1\", "
+                    "\"fit\": \"the fit, shape of element1\", "
+                    "\"price\": \"some number, estimated price of element1\", "
+                    "\"context\": \"a word describing the occasion, mood or functionality of the piece\", "
+                    "\"description\": \"a description of element1, emphasizing on the vibe of the piece and that encapsulates the precedent variables\"}]}"
         },
         {
-            "role": "user",
-            "content": "Describe a single clothing piece following the Requirements that fit the reference image."
-                    "If not precised, keep in mind the color scheme and general vibe of the reference image."
+            "role": "system",
+            "content": f"You are a fashion critique, neutral and objective.\n\n {guide} \n\n You are presented with a critique of an outfit, describe a single element that would improve the outfit."
         },
-        {
-            "role": "user",
-            "content": f"Requirements: element: {element['element']}, color: {element['color']}, fit: {element['fit']}, price: {element['price']}, context: {element['context']}, description: {element['description']}."
-        },
-        {
-            "role": "user",
-            "content": [
-                {
-                    "type": "image_url",
-                    "image_url": f"data:image/jpeg;base64,{image_base64}"
-                }
-            ]
-        }
-    ]
-
-    # Call the Mistral API to complete the chat
-    chat_response = client.chat.complete(
-        model="pixtral-12b-2409",
-        messages=messages,
-        response_format={
-            "type": "json_object",
-        }
-    )
-
-    # Get the content of the response
-    content = chat_response.choices[0].message.content
-    
-    return content
-
-empty_element = {"element":None, "color":None, "fit":None, "price":None, "context":None, "description":None}
-
-def recommend_from_wardrobe(wardrobe, element = empty_element):
-    color_rule = np.random.choice([ 
-                          "complementary colors: colors that are opposite on the color wheel", 
-                          "analogus colors: colors that are close on the color wheel", 
-                          "accent color: one bright color that pops from the rest that are neutral", 
-                          "sandwiching: layering a bright color between two neutral colors",
-                          "monochromatic: using different shades of the same color to create a cohesive look",
-                          "pattern mixing: combining different patterns to create a unique outfit",
-                          "seasonal: using seasonal colors and pieces to create a weather-appropriate outfit",
-                                ])
-    
-    piece_rule = np.random.choice([
-                            "mixing textures: incorporating different textures to add visual interest",
-                            "switching styles: mixing casual and formal pieces for a unique look",
-                            "statement piece: building an outfit around a bold statement piece",
-                            "originality: choosing a unique piece that stands out",
-                            "basics: starting with a basic piece and building around it",
-                            "layering: several pieces of clothing on top of each other to add depth", 
-                            "proportion balance: for example, baggy jeans with a skinny top", 
-                            "accessories: adding a statement piece to elevate the outfit",
-                            "dress code: following a specific dress code to create a cohesive look",
-                            "comfort: prioritizing comfort while still looking put together",
-                            "silouhette: creating a visually interesting shape with the outfit",
-                            "jewelry: adding jewelry to elevate the outfit"
-                                   ])
-    # Define the messages for the chat API
-    messages = [
         {
             "role": "system",
             "content": "Follow this rule when suggesting a piece of clothing: " + piece_rule
@@ -174,32 +141,19 @@ def recommend_from_wardrobe(wardrobe, element = empty_element):
         },
         {
             "role": "system",
-            "content": "Return the answer in a JSON object with the next structure: "
-                    "{\"elements\": [{\"element\": \"name of the piece, not too descriptive\", "
-                    "\"color\": \"color of this piece, one word\", "
-                    "\"fit\": \"fit of this piece\", "
-                    "\"price\": \"some number, estimated price of the piece\", "
-                    "\"context\": \"one word from this list : casual, formal, athletic, office-ready, streetwear, fashion, luxury\", "
-                    "\"description\": \"explain why you chose this piece (don't use the word rule)\"}]}"
+            "content": "You will have to strictly follow these constraints when designing the item :" + str(element)
         },
         {
             "role": "user",
-            "content": "Describe a single clothing piece or accessory following the requirements that fit in my wardrobe, while not already being in it."
-        },
-        {
-            "role": "user",
-            "content": f"Requirements: element: {element['element']}, color: {element['color']}, fit: {element['fit']}, price: {element['price']}, context: {element['context']}, description: {element['description']}."
-        },
-        {
-            "role": "user",
-            "content": f"I have these elements in my wardrobe: {(' '.join(wardrobe['description']))}."
+            "content": critique
         }
     ]
 
     # Call the Mistral API to complete the chat
     chat_response = client.chat.complete(
-        model="mistral-large-latest",
+        model=f"mistral-{model}-latest",
         messages=messages,
+        temperature=0.4,
         response_format={
             "type": "json_object",
         }
@@ -207,6 +161,35 @@ def recommend_from_wardrobe(wardrobe, element = empty_element):
 
     # Get the content of the response
     content = chat_response.choices[0].message.content
+    
+    return content
+
+def recommend_from_wardrobe(args):
+    wardrobe, element = args
+    model="large"
+    color_rules = np.random.choice([ 
+                                "complementary colors: colors that are opposite on the color wheel", 
+                                "analogus colors: colors that are close on the color wheel", 
+                                "accent color: one bright color that pops from the rest that are neutral", 
+                                "sandwiching: layering a bright color between two neutral colors",
+                                "monochromatic: using different shades of the same color to create a cohesive look",
+                                "pattern mixing: combining different patterns to create a unique outfit",
+                                "seasonal: using seasonal colors and pieces to create a weather-appropriate outfit",
+                                            ])
+            
+    piece_rules = np.random.choice([
+                                    "mixing textures: incorporating different textures to add visual interest",
+                                    "statement piece: building an outfit around a bold statement piece",
+                                    "proportion balance: suggest a piece with a fit that balances the outfit", 
+                                    "accessories: adding an accessory to elevate the outfit",
+                                    "silouhette: creating a visually interesting shape with the outfit",
+                                    "replacement: suggesting a piece that would replace a current piece in the outfit",
+                                    "layering: adding a layer to the outfit to create depth, like a coat or jacket",
+                                    "adding surface: suggest a pig piece with a different surface, like a shiny or matte fabric"
+                                        ])
+    
+    critique = process_critique((wardrobe, model))
+    content = recommend_item((critique, color_rules, piece_rules, element, model))
     
     return content
 
