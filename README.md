@@ -16,7 +16,7 @@ Une fois la photo reçue, elle est process par Pixtral qui en extrait une descri
 
 ### 1.1. Génération d'une recommandation
 
-Le chatbot est designé pour répondre à des sollicitations de mode, suite à des prompts du type "Can you recommend a clothe to match image number 7 ?" ou similaire.
+Le chatbot est designé pour répondre à des sollicitations de conseils, suite à des prompts du type **"Can you recommend a clothe to match image number 7 ?"** ou similaire.
 
 Il ira chercher la garde-robe associée à l'image mentionnée, et l'analysera pour en générer un vêtement qui complèterait la tenue en suivant des règles d'esthétique et de mode définies au préalable. Si aucune image n'est mentionnée, il ira chercher l'ensemble e la garde-robe de l'utilisateur.
 
@@ -26,7 +26,7 @@ Une fois la recommandation faite, il fera appel à un scrapper internet pour all
 
 ### 1.2. Génération d'une preview
 
-Le keyword "preview" permet également à l'utiliateur de demander à son assistant de générer une image ressemblant à l'image modèle, mais en y ajoutant le vêtement recommandé. Cette génération se fait via l'appel de stable diffusion par notre llm.
+Une phrase du type **"Can you generate a preview of the new outfit ?"** permet également à l'utiliateur de demander à son assistant de générer une image ressemblant à l'image modèle, mais en y ajoutant le vêtement recommandé. Cette génération se fait via l'appel de stable diffusion par notre llm.
 
 [détailler]
 
