@@ -33,6 +33,22 @@ body {
     margin-bottom: 15px;
 }
 
+/* Logo Styling */
+#logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* Adds spacing below the logo */
+}
+
+#logo {
+    width: 100px; /* Adjust size as needed */
+    height: 100px; /* Ensure it's a square */
+    border-radius: 50%; /* Makes the image circular */
+    border: 2px solid #ccc; /* Optional border around the logo */
+    object-fit: cover; /* Ensures the image fits nicely inside the circle */
+}
+
+
 /* Ensure the image gallery is horizontally scrollable */
 #image-gallery {
     display: flex;
