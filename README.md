@@ -3,7 +3,7 @@
 ## 0. Introduction:
 RelookX est une plateforme en ligne complète pour gérer vos vêtements, augmenter la créativité de vos tenues tout en restant à la mode et fidèles à votre style.
 
-Cet assistant personnel apprend à connaître votre style et votre garde-robes à partir des photos de vos meilleures tenues, et vous propose ensuite des nouvelles pièces à ajouter à votre collection pour faire passer votre style au niveau supérieur!
+Cet assistant personnel apprend à connaître votre style et votre garde-robe à partir des photos de vos meilleures tenues, et vous propose ensuite des nouvelles pièces à ajouter à votre collection pour faire passer votre style au niveau supérieur!
 
 Vous n'êtes pas sur de vouloir acheter la pièce qu'il recommande?
 
@@ -16,9 +16,11 @@ Une fois la photo reçue, elle est process par Pixtral qui en extrait une descri
 
 ### 1.1. Génération d'une recommandation
 
-Le chatbot est designé pour répondre à des sollicitations de mode, suite à des prompts du type "Can you recommend a clothe to match image number 7 ?".
+Le chatbot est designé pour répondre à des sollicitations de mode, suite à des prompts du type "Can you recommend a clothe to match image number 7 ?" ou similaire.
 
-Il ira chercher la garde-robe associée à l'image mentionnée, et l'analysera pour en générer un vêtement qui complèterait la tenue en suivant des règles d'esthétique et de mode définies au préalable.
+Il ira chercher la garde-robe associée à l'image mentionnée, et l'analysera pour en générer un vêtement qui complèterait la tenue en suivant des règles d'esthétique et de mode définies au préalable. Si aucune image n'est mentionnée, il ira chercher l'ensemble e la garde-robe de l'utilisateur.
+
+Il est également possible de préciser sa demande, en demandant un type de vêtement ou une couleur en particulier.
 
 Une fois la recommandation faite, il fera appel à un scrapper internet pour aller chercher un vêtement correspondant à la description générée sur un site de e-commerce et proposera directement à l'utilisateur de faire l'achat.
 
@@ -50,7 +52,7 @@ L'idée originale était de fine-tuner un modèle mistral-small à cette tâche 
 
 Le modèle fine-tuné aurait dû, à partir de descriptions de tenues, donner directement le vêtement à y ajouter.
 
-A cette fin, un dataset de fine-tuning a été généré, composé de nombreuses entrée et sorties du workflow détaillé précédemment (/src/pixtral/data_gen, /src/pixtral/data).
+A cette fin, un dataset de fine-tuning a été généré, composé de nombreuses entrée et sorties du workflow détaillé précédemment (/src/pixtral/data_gen.ipynb, /src/pixtral/data).
 
 Malheureusement, les tâches de fine-tuning n'étaient pas réalisables sur la plate-forme de Mistral pendant la plupart du hackathon ce qui nous a empêché de le mener à bout, et le site final incorpore donc le workflow plus lent. Le plus gros du travail de fine-tuning, en particulier la génération de data a néanmoins été faite.
 
