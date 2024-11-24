@@ -1,4 +1,4 @@
-import test_stable as gn
+import app.retailx7.Home.ia_files.outfit_preview as gn
 
 
 gn.generate_outfit_preview("Realistic photo of a young man skating, white denim sweater",
