@@ -27,7 +27,7 @@ client = Mistral(api_key=api_key)
 
 
 def is_recommandation(user_input):
-    prompt = "Analyze the user's input and determine if they are explicitly requesting outfit recommendations. Avoid any request related to outfit preview. Respond with either True or False, based solely on whether the user’s input suggests they want advice or suggestions for outfits. Do not include any punctuation in your response."
+    prompt = "Analyze the user's input and determine if they are explicitly requesting outfit recommendations. Avoid any request containing the word 'preview'. Respond with either True or False, based solely on whether the user’s input suggests they want advice or suggestions for outfits. Do not include any punctuation in your response."
     cur_messages = [
         {"role": "system", "content": prompt},
         {"role":"user", "content":user_input}
