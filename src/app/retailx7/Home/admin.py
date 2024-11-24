@@ -5,12 +5,12 @@ import json
 
 from django.utils.safestring import mark_safe
 
-# Inline model for InformationUser
-class InformationUserInline(admin.StackedInline):
-    model = InformationUser
-    can_delete = False
-    verbose_name_plural = 'Information'
-    fields = ('gender', 'favorite_color', 'height', 'weight')  # Fields to display in the inline form
+@admin.register(InformationUser)
+class InformationUserAdmin(admin.ModelAdmin):
+    list_display = ('user', 'gender', 'favorite_color', 'height', 'weight')  # Display fields in the list view
+    search_fields = ('user__username', 'gender', 'favorite_color')  # Enable search by user and fields
+    list_filter = ('gender',)  # Add a filter sidebar for gender
+    ordering = ('user',)  # Order by user by default# Fields to display in the inline form
 
 # CustomUserAdmin with InformationUser inline
 @admin.register(CustomUser)
@@ -24,7 +24,7 @@ class CustomUserAdmin(UserAdmin):
     filter_horizontal = ('images', 'groups', 'user_permissions')  # Makes ManyToManyFields easier to manage
 
     # Add the inline for InformationUser
-    inlines = [InformationUserInline]
+    #inlines = [InformationUserInline]
 
 # Custom admin for Image
 @admin.register(Image)
