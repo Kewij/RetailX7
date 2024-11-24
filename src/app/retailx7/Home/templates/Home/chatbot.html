@@ -68,8 +68,8 @@
         
                 var messageElement = document.createElement('div');
                 messageElement.classList.add(msg.role + '-message');
-                messageElement.innerHTML = "<strong>" + capitalizeFirstLetter(msg.role) + ":</strong> "
-                let html = '<ul style="list-style-type: none; padding: 0; margin: 0;">';
+                messageElement.innerHTML = "<strong>" + capitalizeFirstLetter(msg.role) + ":</strong> ";
+                let html = '<ul id="clothe" style="list-style-type: none; padding: 0; margin: 0;">';
                 if (msg.dict_infos) {
                     msg.dict_infos.forEach(clothe => {
                     for (const [key, value] of Object.entries(clothe)) {
