@@ -5,6 +5,7 @@ from django.conf import settings
 class CustomUser(AbstractUser):
     bio = models.TextField(blank=True)  # Champ texte long pour la bio de l'utilisateur
     images = models.ManyToManyField('Image', blank=True)  # Lien vers un modèle Image
+    information = models.JSONField(blank=True, null=True)  # Field to store user information as a dictionary
 
     groups = models.ManyToManyField(
         'auth.Group', 
