@@ -46,7 +46,7 @@ def img_to_base64_path(image_path):
 
 def list_clothes(args): 
     image_base64 = args
-    with open("./guides/desc_guide.txt", "r") as f:
+    with open("/guides/desc_guide.txt", "r") as f:
         guide = f.read()
         
     # Define the messages for the chat API
