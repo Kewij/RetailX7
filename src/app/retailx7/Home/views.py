@@ -115,7 +115,7 @@ def chatbot_response(request):
         user_message = request.POST.get('message')
         if user_message:
             print("Message reçu: ", user_message)
-            conversation.message = query_chat(user_message, conversation.message)
+            conversation.message = query_chat(user_message, request.user, conversation.message)
             """# Ajouter le message de l'utilisateur au champ message de la conversation
             conversation.message.append({'role': 'user', 'content': user_message})
 

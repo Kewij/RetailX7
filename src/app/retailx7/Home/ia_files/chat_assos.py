@@ -14,7 +14,7 @@ from PIL import Image as PILImage
 from io import BytesIO
 from django.core.files.base import ContentFile
 from django.conf import settings
-from Home.models import Image
+from Home.models import Image, InformationUser
 
 model = "mistral-small-latest"
 api_key = os.environ["MISTRAL_API_KEY"]
@@ -34,20 +34,37 @@ def is_recommandation(user_input):
     bool_reco = chat_bool.choices[0].message.content
     return bool_reco
 
-def make_prompt(user_input):
-    return f"""
-    You are a personal fashion advisor. Your role is to provide customized fashion recommendations to users based on their preferences, occasion, and budget. Your response must only include a list of references for items that can be searched on a shopping website, formatted as a list within square brackets [].
+def make_prompt(user_input, infos_text=None):
+    if infos_text == None:
+        return f"""
+        You are a personal fashion advisor. Your role is to provide customized fashion recommendations to users based on their preferences, occasion, and budget. Your response must only include a list of references for items that can be searched on a shopping website, formatted as a list within square brackets [].
 
-    # Example Conversation:
-    User Input:
-    "I need advice on what to wear for a semi-formal dinner. I like simple, classic styles but with a modern twist. My budget is around $150."
+        # Example Conversation:
+        User Input:
+        "I need advice on what to wear for a semi-formal dinner. I like simple, classic styles but with a modern twist. My budget is around $150."
 
-    LLM Response:
-    ["slim-fit navy blazers", "non-iron stretch Oxford shirts", "stretch slim-fit chinos", "leather loafers"]
+        LLM Response:
+        ["slim-fit navy blazers", "non-iron stretch Oxford shirts", "stretch slim-fit chinos", "leather loafers"]
 
-    # User Input:
-    {user_input}
-    """
+        # User Input:
+        {user_input}
+        """
+    else:
+        return f"""
+        You are a personal fashion advisor. Your role is to provide customized fashion recommendations to users based on their preferences, occasion, budget and personal information. Your response must only include a list of references for items that can be searched on a shopping website, formatted as a list within square brackets []. Based on the provided information, include the gender in your references if it is available.
+
+        # Example Conversation:
+        User Input:
+        "I need advice on what to wear for a semi-formal dinner. I like simple, classic styles but with a modern twist. My budget is around $150."
+
+        LLM Response:
+        ["slim-fit navy blazers", "non-iron stretch Oxford shirts", "stretch slim-fit chinos", "leather loafers"]
+
+        {infos_text}
+
+        # User Input:
+        {user_input}
+        """
 
 
 def scrap_asos(query, maxItems = 3):
@@ -192,10 +209,10 @@ def save_outfit_images(outfit):
             item["image"] = image_instance
     return outfit
  
-def pipeline_chatbot(user_input, messages=[]):
+def pipeline_chatbot(user_input, infos_text=None, messages=[]):
     # Met le prompt dans le LLM
     # messages.append({"role":"user", "content":prompt})
-    prompt = make_prompt(user_input)
+    prompt = make_prompt(user_input, infos_text)
     print(prompt)
     chat_response = client.chat.complete(
         model=model,
@@ -225,10 +242,21 @@ def pipeline_chatbot(user_input, messages=[]):
     
     return messages
 
-def query_chat(new_query, messages=[]):
+def transform_dict_llm(input_dict):
+    if input_dict == {}:
+        return None
+    dict_text = "#User Infos:\n"
+    for key, value in input_dict.items():
+        dict_text += f"- {key.capitalize()} : {value}\n"
+    return dict_text
+
+def query_chat(new_query, user, messages=[]):
+    user_infos = retrieve_information(user)
+    infos_text = transform_dict_llm(user_infos)
+    print(infos_text)
     bool_reco = is_recommandation(new_query)
     if bool_reco == "True":
-        messages = pipeline_chatbot(new_query, messages)
+        messages = pipeline_chatbot(new_query, infos_text, messages)
     else:
         messages.append({"role": "user", "content": new_query})
         response = client.chat.complete(
@@ -237,3 +265,18 @@ def query_chat(new_query, messages=[]):
         )
         messages.append({"role": "assistant", "content": response.choices[0].message.content})
     return messages
+
+def retrieve_information(user):
+    if user.is_authenticated:
+        # Perform operations with the authenticated user
+        print(f"Processing data for user: {user.username}")
+        info_user = InformationUser.objects.get(user=user)
+        return {
+            "gender": info_user.gender,
+            "favorite_color": info_user.favorite_color,
+            "height": info_user.height,
+            "weight": info_user.weight
+        }
+    else:
+        print("Anonymous user.")
+        return {}
