@@ -59,7 +59,7 @@ def make_prompt_stable_diff(user_input, infos_text=None):
         "I’ve found a recommendation that matches your request. A beige dad cap with a subtle logo to match image number 6. This accessory adds an understated, modern touch to the outfit, complementing the oversized hoodie and distressed jeans. The beige color contributes to the monochromatic theme, creating a cohesive and harmonious look while maintaining the casual streetwear vibe. The slight curve on the brim provides a relaxed, laid-back feel, perfect for everyday wear."
 
         User Input:
-        "What would this looklike ?"
+        "Show me a preview of this new outfit ?"
         
 
         LLM answers:
