@@ -210,6 +210,7 @@ def pipeline_chatbot(user_input, messages=[]):
     """
     # Pour le scrap rapide
     outfit = request_asos_outfit(queries, maxItems=1)
+    print("outfit :", outfit)
     # outfit = save_outfit_images(outfit)
     # Créé et envoie un message à envoyer au user
     message_outfit = create_first_message(json.dumps(outfit, indent=4))
