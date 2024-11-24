@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Image, ChatbotConversation, InformationUser
+from .models import CustomUser, Image, ChatbotConversation, InformationUser, ImageGenere
 import json
 
 from django.utils.safestring import mark_safe
@@ -71,3 +71,7 @@ class ChatbotConversationAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'created_at')  # Fields displayed in the list view
     search_fields = ('user__username',)  # Allow searching by user
     list_filter = ('created_at',)  # Filter conversations by creation date
+
+@admin.register(ImageGenere)
+class ImageGenereAdmin(admin.ModelAdmin):
+    list_display = ('id', 'image')  # Columns to display in the admin list view
