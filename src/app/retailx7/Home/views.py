@@ -30,32 +30,6 @@ def user_logout(request):
     logout(request)
     return redirect('login')  # Redirection vers la page de login après logout
    
-
-# Page d'accueil
-@login_required
-def home_2(request):
-    if request.method == 'POST':
-        form = ImageUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = form.save(commit=False)
-            image.user = request.user
-
-            image_file = request.FILES['image']  # Get the uploaded image from the form
-            image_bytes = image_file.read()  # Read the file as bytes
-            image_base64 = base64.b64encode(image_bytes).decode('utf-8')  # Encode to Base64
-            image.description = json.loads(list_clothes(image_base64))
-
-
-
-            image.save()
-            return redirect('home')
-    else:
-        form = ImageUploadForm()
-
-    #suggestions = make_suggestions(request.user)
-    
-    return render(request, 'Home/home.html', {'form': form, "suggestions":[]})
-
 @login_required
 def home(request):
     try:
@@ -97,13 +71,13 @@ def home(request):
                 image.save()
                 return redirect('home')
     
-    #suggestions = make_suggestions(request.user)
+    suggestions = make_suggestions(request.user)
 
     return render(request, 'Home/home.html', {
         'image_form': image_form,
         'info_form': info_form,
         'has_information': has_information,
-        'suggestions': [],
+        'suggestions': suggestions
     })
 
 

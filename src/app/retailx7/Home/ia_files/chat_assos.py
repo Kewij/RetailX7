@@ -213,7 +213,7 @@ def retrieve_information(user):
         print("Anonymous user.")
         return {}
     
-def make_suggestions(user, nb_suggestions=1):
+def make_suggestions(user, nb_suggestions=3):
     suggestions = []
     user_infos = retrieve_information(user)
     user_infos = transform_dict_llm(user_infos)
