@@ -310,9 +310,51 @@ def generate_empty_element(new_query):
     empty_element = {key: (None if value == "None" else value) for key, value in empty_element.items()}
     return empty_element
 
+def create_reco_message(outfit, desc):
+    return f"""
+    Here is your recommendation to keep in memory:
+    {outfit}.
+    Your task is to indicate that a recommendation has been successfully found and to provide the exact description stored in the variable `desc`. Follow these instructions:
+
+    1. Begin your response with a natural and varied sentence indicating that you have found a recommendation.
+    2. Immediately after, output the value of the variable `desc` exactly as it is. Do not alter, rephrase, or add anything to the description.
+    3. Your response must be limited to these two parts: the introductory sentence and the exact content of `desc`.
+
+    **Example:**
+
+    If `desc` is: "A stylish slim-fit black blazer perfect for formal meetings and professional events."
+    Your output should be:
+    I’ve found something that might interest you.
+    A stylish slim-fit black blazer perfect for formal meetings and professional events.
+
+    If `desc` is: "Comfortable blue running shoes with great support for long-distance runs."
+    Your output should be:
+    Here’s a recommendation based on your request.
+    Comfortable blue running shoes with great support for long-distance runs.
+
+    If `desc` is: "An elegant red cocktail dress ideal for evening parties and special occasions."
+    Your output should be:
+    This is a suggestion that matches what you’re looking for.
+    An elegant red cocktail dress ideal for evening parties and special occasions.
+
+    Now generate the output using the following value for `desc`:
+
+    {desc}
+    """
+
+
 def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
     wardrobe = generate_wardrobe(new_query, user)
-    empty_element = generate_empty_element(new_query, messages)
-    content = recommend_from_wardrobe(wardrobe, empty_element)
+    empty_element = generate_empty_element(new_query)
+    content = recommend_from_wardrobe(wardrobe, empty_element)["elements"]
+    desc = content["description"]
     clothe = fetch_from_img_reco(content)
-    return clothe
+    reco_message = create_reco_message(clothe, desc)
+    messages.append({"role": "user", "content": new_query})
+    messages.append({"role": "system", "content": reco_message})
+    reco_response = client.chat.complete(
+        model="mistral-small-latest",
+        messages=messages,
+    ).choices[0].message.content
+    messages.append({"role": "assistant", "content": reco_response, "dict_infos": clothe})
+    return messages
