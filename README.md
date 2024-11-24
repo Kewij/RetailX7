@@ -88,7 +88,7 @@ Malheureusement, les tâches de fine-tuning n'étaient pas réalisables sur la p
 
 ### 2.3. Site internet et serveurs
 
-![Architecture des services](https://github.com/Kewij/RetailX7/schema.png)
+![Architecture des services](./schema.png)
 
 Le site est héberger sur un serveur distant sans carte graphique, entièrement en Django, en version test. Il se connect aux différents services pour répondre aux demanders : mistral, api asos, serveur de stable-diffusion.
 
