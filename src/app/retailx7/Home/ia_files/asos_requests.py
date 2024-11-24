@@ -3,7 +3,7 @@ import ast
 from skimage import io
 import requests
 
-def scrap_asos(query, maxItems = 3):
+def scrap_asos(query, maxItems = 1):
     """ Data scraper from asos.
     Inputs: 
         query (str): search query
@@ -37,18 +37,18 @@ def scrap_asos(query, maxItems = 3):
         try :
             # Certains articles n'ont pas de prix d'où la gestion d'erreur
             price = item["variants"][0]["pricing"]["price"]["current"]["text"]
-            
+            print("url de l'outfit", item["images"][0]["url"])
             Items.append({
                 "name" : item["name"],
                 "brandName" : item["brandName"],
                 "price" : price,
-                "image" : io.imread(item["images"][0]["url"]),
+                "imageUrl" : item["images"][0]["url"],
                 "gender" : item["gender"],
                 "url" : item["url"]
             })
         except:
             pass
-        
+    print(Items)
     return Items
 
 def scrap_asos_outfit(queries, maxItems=3):

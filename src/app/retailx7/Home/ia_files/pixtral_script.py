@@ -5,7 +5,7 @@ import json
 import pandas as pd
 from typing import Union
 import numpy as np
-from .asos_requests import request_asos
+from .asos_requests import request_asos, scrap_asos
 
 # Load Mistral API key from environment variables
 api_key = os.environ["MISTRAL_API_KEY"]
@@ -201,7 +201,7 @@ def recommend_from_wardrobe(args):
 
 def fetch_from_img_reco(recommandations):
     query = recommandations["fit"] + " " + recommandations["color"] + " " + recommandations["element"]
-    clothe = request_asos(query, maxItems=1)
+    clothe = scrap_asos(query, maxItems=1)
     return clothe
 
 def generate_wardrobe(new_query, user):
@@ -369,4 +369,5 @@ def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
         messages=messages,
     ).choices[0].message.content
     messages.append({"role": "assistant", "content": reco_response, "dict_infos": clothe})
+    print("clothe :", clothe)
     return messages, clothe
