@@ -84,6 +84,7 @@ def pipeline_preview_outfit(user_input, infos_text=None, messages=[]):
     image_file = ContentFile(image_data, name="generated_image.png") 
     image_instance = ImageGenere.objects.create(image=image_file)
     image_url = "devops.tlapp.net" + image_instance.image.url
+    messages.append({"role":"user", "content":user_input})
     messages.append({"role": "assistant", "content": "This the preview", "dict_infos" : [{"imageUrl" : image_url}]})
     
     return messages
