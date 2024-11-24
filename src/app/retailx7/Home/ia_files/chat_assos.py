@@ -27,15 +27,25 @@ client = Mistral(api_key=api_key)
 
 
 def is_recommandation(user_input):
-    prompt = """Analyze the user's input and determine if they are explicitly requesting outfit recommendations. 
-    Respond with either True or False, based solely on whether the user’s input suggests they want advice or suggestions for outfits. Do not include any punctuation in your response."""
-    cur_messages = [
-        {"role": "system", "content": prompt},
-        {"role":"user", "content":user_input}
+    messages = [
+        {
+            "role": "system",
+            "content": "Return the answer as bool, either 'True' or 'False' but nothing else, and not more than one word."
+        },
+        {
+            "role": "system",
+            "content": "You will always return 'True' if there is a word similar to 'recommend', 'buy', 'suggest', 'advice', 'new' in the user input."
+                        "You will always return 'True' if the user seems to be wanting to buy clothes, to get a new item, to get advice or suggestions."
+        },
+        {
+            "role": "user",
+            "content": user_input
+        }
     ]
+    
     chat_bool = client.chat.complete(
         model=model,
-        messages=cur_messages
+        messages=messages
     )
     bool_reco = chat_bool.choices[0].message.content
     return bool_reco
@@ -60,7 +70,7 @@ def make_prompt(user_input, infos_text=None):
         You are a personal fashion advisor. 
         Your role is to provide customized fashion recommendations to users based on their preferences, occasion, budget and personal information. 
         Your response must only include a list of references for items that can be searched on a shopping website, formatted as a list within square brackets []. 
-        Based on the provided information, include the gender in your references if it is available.
+        Your answer must only contain the list.
 
         # Example Conversation:
         User Input:
@@ -68,8 +78,6 @@ def make_prompt(user_input, infos_text=None):
 
         LLM Response:
         ["slim-fit navy blazers", "non-iron stretch Oxford shirts", "stretch slim-fit chinos", "leather loafers"]
-
-        {infos_text}
 
         # User Input:
         {user_input}
@@ -203,7 +211,7 @@ def retrieve_information(user):
         print("Anonymous user.")
         return {}
     
-def make_suggestions(user, nb_suggestions=1):
+def make_suggestions(user, nb_suggestions=3):
     suggestions = []
     user_infos = retrieve_information(user)
     user_infos = transform_dict_llm(user_infos)
