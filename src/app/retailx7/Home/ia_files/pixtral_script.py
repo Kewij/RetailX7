@@ -228,7 +228,7 @@ def generate_wardrobe(new_query, user):
     print(f"Image choisie : {img}")
     images = user.user_images.all()
     if img != -1:
-        print("Description choisie :", images[img-1].description["elements"])
+        print("Description choisie :", images[img].description["elements"])
     if img == -1:
         # Wardrobe complète
         wardrobe = []
@@ -238,7 +238,7 @@ def generate_wardrobe(new_query, user):
                 wardrobe.extend(elements)  # Ajouter les éléments à la liste globale
     else:
         # Choix d'un outfit spécifique
-        wardrobe = images[img-1].description["elements"]
+        wardrobe = images[img].description["elements"]
 
     return {"elements": wardrobe}
 
