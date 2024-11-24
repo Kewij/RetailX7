@@ -19,13 +19,6 @@ def generate_outfit_preview(prompt, negative_prompt):
             "batch_size": 1,
 
             "alwayson_scripts": {
-                    "Refiner": {
-                    "args": [
-                        True,
-                        "sd_xl_refiner_1.0",
-                        0.5
-                    ]
-                },
                 "Adetailer": {
                     "args": [
                         True,
