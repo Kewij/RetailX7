@@ -352,7 +352,7 @@ def create_reco_message(outfit, desc):
 def pipeline_reco_from_wardrobe(new_query, user, infos_text, messages):
     wardrobe, img = generate_wardrobe(new_query, user)
     if img > 0:
-        stable_message = {"role": "system", "content": f"Here is the description of the outfit in the image number {img}: {json.dump(wardrobe["elements"])}"}
+        stable_message = {"role": "system", "content": f"Here is the description of the outfit in the image number {img}: {json.dump(wardrobe['elements'])}"}
     wardrobe = json_to_dataframe(wardrobe, key="elements")
     empty_element = generate_empty_element(new_query)
     content = json.loads(recommend_from_wardrobe((wardrobe, empty_element)))["elements"][0]
