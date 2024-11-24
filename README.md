@@ -99,8 +99,13 @@ En effet, le serveur ne permettait pas disposer du stable-diffusion en local, il
 
 Pour la génération d'une preview il a été décidé d'utiliser la webui de stable diffusion.
 
-L'objectif était d'utiliser l'extention ControlNet de façon à pouvoir obliger l'image générée à correspondre dans une plus grande mesure à la photo fournie par l'utilisateur et de pouvoir régler et déclancher cette génération d'image par des appels pythons. 
-Nous avons réalisé cet objectif en local sur un ordinateur utilisant windows. 
+Nous souhaitions pouvoir générer une image répondant aux attentes de l'utilisateur, c'est-à-dire utiliser une de ses photos et ajouter la recommandation du LLM sur la photo tout en conservant une cohérence.
+
+En effet, nous avons essayé deux technologies : ControlNet et Advisalier. La première permet de bien correspondre à la position et d'aider Stable Diffusion à positionner correctement les éléments proposés par le LLM, tandis qu'Advisalier permet d'obtenir un rendu avec un visage de meilleure qualité.
+
+Ainsi, un prompt utilisateur est censé déclencher la génération d'une image à l'aide de ces technologies, en y ajoutant un contexte grâce au LLM.
+
+En local, nous avons réussi à implémenter la génération d'images avec Advisalier et ControlNet.
 
 Helas, en voulant porter notre solution vers notre serveur Django nous avons rencontré un certain nombre de problèmes techniques. 
 L'installation de stable diffusion nécessite une carte graphique que notre serveur n'a pas. 
