@@ -12,8 +12,8 @@ payload = {
 # Send said payload to said URL through the API.
 response = requests.post(url=f'{url}/sdapi/v1/txt2img', json=payload)
 r = response.json()
+print(r)
 
 # Decode and save the image.
 with open("output.png", 'wb') as f:
-    print(r)
     f.write(base64.b64decode(r['images'][0]))
