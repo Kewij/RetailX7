@@ -5,7 +5,7 @@ import json
 import pandas as pd
 from typing import Union
 import numpy as np
-from .chat_assos import request_asos
+from .asos_requests import request_asos
 
 # Load Mistral API key from environment variables
 api_key = os.environ["MISTRAL_API_KEY"]
