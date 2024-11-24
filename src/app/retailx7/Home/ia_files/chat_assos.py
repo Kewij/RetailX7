@@ -17,6 +17,7 @@ from django.conf import settings
 from Home.models import Image, InformationUser
 from .pixtral_script import pipeline_reco_from_wardrobe
 from .chat_stable_diff import *
+from .asos_requests import request_asos_outfit
 
 model = "mistral-small-latest"
 api_key = os.environ["MISTRAL_API_KEY"]
