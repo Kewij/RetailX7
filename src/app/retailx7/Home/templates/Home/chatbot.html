@@ -28,7 +28,7 @@
                                     {% else %}
                                         {% if key == 'url' %}
                                             <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
-                                                <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">https://{{ value }}</span>
+                                                <strong style="color: #007bff;">{{ key }}</strong>: <span style="color: #555;">https://www.asos.com/us/{{ value }}</span>
                                             </li>
                                         {% else %}
                                             <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
@@ -84,7 +84,7 @@
                         if (key === 'imageUrl') {
                             html += `
                                 <li style="margin: 10px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px; text-align: center;">
-                                    <img src="https://${value}" alt="" style="max-width: 100%; border-radius: 5px;">
+                                    <img src="https://www.asos.com/us/${value}" alt="" style="max-width: 100%; border-radius: 5px;">
                                 </li>`;
                         } else if (key === 'url') {
                             html += `
