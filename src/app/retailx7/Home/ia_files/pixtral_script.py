@@ -255,7 +255,7 @@ def generate_wardrobe(new_query, user):
         # Choix d'un outfit spécifique
         wardrobe = images[img-1].description["elements"]
 
-    return wardrobe
+    return {"elements": wardrobe}
 
 def generate_empty_element(new_query):
     prompt = """
