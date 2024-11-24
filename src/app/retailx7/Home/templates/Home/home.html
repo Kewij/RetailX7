@@ -40,8 +40,17 @@
             </div>
         </div>
     </div>
-    <div id="right-panel">
-        {% include 'Home/chatbot.html' %}
-    </div>
+    {% if has_information %}
+        <div id="right-panel">
+            {% include 'Home/chatbot.html' %}
+        </div>
+    {% else %}
+        <!-- Form based on InformationUserForm -->
+        <form method="post">
+            {% csrf_token %}
+            {{ info_form.as_p }} <!-- Automatically renders the form fields as <p> elements -->
+            <button type="submit">Save Information</button>
+        </form>
+    {% endif %}
 </body>
 </html>

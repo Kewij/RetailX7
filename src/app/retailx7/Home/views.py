@@ -1,16 +1,16 @@
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
-from .forms import LoginForm, ImageUploadForm
+from .forms import LoginForm, ImageUploadForm, InformationUserForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import ChatbotConversation
+from .models import ChatbotConversation, InformationUser
 
 import base64, json
 
-from .ia_files.pixtral_script import list_clothes
+from .ia_files.pixtral_script import list_clothes, recommend_from_wardrobe
 from .ia_files.chat_assos import query_chat
 
 # Vue de login
@@ -30,9 +30,20 @@ def user_logout(request):
     logout(request)
     return redirect('login')  # Redirection vers la page de login après logout
 
+def generate_suggestion(request):
+    if request.user.is_authenticated:
+        # Récupère toutes les images de l'utilisateur connecté
+        images = request.user.user_images.all().order_by('-id')
+    else:
+        images = []
+
+    recommend_from_wardrobe(images)
+
+    
+
 # Page d'accueil
 @login_required
-def home(request):
+def home_2(request):
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -52,6 +63,52 @@ def home(request):
         form = ImageUploadForm()
     
     return render(request, 'Home/home.html', {'form': form, "suggestions":[]})
+
+@login_required
+def home(request):
+    try:
+        user_information = request.user.information_user
+        has_information = True
+    except InformationUser.DoesNotExist:
+        user_information = None
+        has_information = False
+
+    # Initialize forms
+    image_form = ImageUploadForm()
+    info_form = InformationUserForm(instance=request.user.information_user)
+
+    if request.method == 'POST':
+        # Check if it's an image form submission
+        if 'gender' in request.POST or 'favorite_color' in request.POST:
+            info_instance, created = InformationUser.objects.get_or_create(user=request.user)
+
+            # Initialize the form with the retrieved or newly created instance
+            info_form = InformationUserForm(request.POST, instance=info_instance)
+            if info_form.is_valid():
+                info_form.save()
+                return redirect('home')
+        else:
+            image_form = ImageUploadForm(request.POST, request.FILES)
+            if image_form.is_valid():
+                image = image_form.save(commit=False)
+                image.user = request.user
+
+                # Process the uploaded image
+                image_file = request.FILES['image']
+                image_bytes = image_file.read()
+                image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+                image.description = json.loads(list_clothes(image_base64))
+
+                image.save()
+                return redirect('home')
+        
+
+    return render(request, 'Home/home.html', {
+        'image_form': image_form,
+        'info_form': info_form,
+        'has_information': has_information,
+        'suggestions': [],
+    })
 
 
 @csrf_exempt  # Ajoutez cette décorateur si vous avez des problèmes avec le CSRF pour les requêtes AJAX

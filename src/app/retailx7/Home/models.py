@@ -5,8 +5,7 @@ from django.conf import settings
 class CustomUser(AbstractUser):
     bio = models.TextField(blank=True)  # Champ texte long pour la bio de l'utilisateur
     images = models.ManyToManyField('Image', blank=True)  # Lien vers un modèle Image
-    information = models.JSONField(blank=True, null=True)  # Field to store user information as a dictionary
-
+ 
     groups = models.ManyToManyField(
         'auth.Group', 
         related_name='customuser_groups',  # Le related_name personnalisé
@@ -20,6 +19,25 @@ class CustomUser(AbstractUser):
         blank=True,
         help_text='Specific permissions for this user.'
     )
+
+class InformationUser(models.Model):
+    GENDER_CHOICES = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ]
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="information_user"
+    )
+    gender = models.CharField("Gender", max_length=10, choices=GENDER_CHOICES, blank=True)
+    favorite_color = models.CharField("Favorite Color", max_length=50, blank=True)
+    height = models.FloatField("Height (in cm)", blank=True, null=True)
+    weight = models.FloatField("Weight (in kg)", blank=True, null=True)
+
+    def __str__(self):
+        return f"Information for {self.user.username}"
 
 class Image(models.Model):
     user = models.ForeignKey(
