@@ -4,6 +4,7 @@ from mistralai import Mistral
 import json
 import pandas as pd
 from typing import Union
+import numpy as np
 
 # Load Mistral API key from environment variables
 api_key = os.environ["MISTRAL_API_KEY"]
@@ -106,6 +107,81 @@ def recommend_from_image(image_base64, description=None):
     # Call the Mistral API to complete the chat
     chat_response = client.chat.complete(
         model="pixtral-12b-2409",
+        messages=messages,
+        response_format={
+            "type": "json_object",
+        }
+    )
+
+    # Get the content of the response
+    content = chat_response.choices[0].message.content
+    
+    return content
+
+empty_element = {"element":None, "color":None, "fit":None, "price":None, "context":None, "description":None}
+
+def recommend_from_wardrobe(wardrobe, element = empty_element):
+    color_rule = np.random.choice([ 
+                          "complementary colors: colors that are opposite on the color wheel", 
+                          "analogus colors: colors that are close on the color wheel", 
+                          "accent color: one bright color that pops from the rest that are neutral", 
+                          "sandwiching: layering a bright color between two neutral colors",
+                          "monochromatic: using different shades of the same color to create a cohesive look",
+                          "pattern mixing: combining different patterns to create a unique outfit",
+                          "seasonal: using seasonal colors and pieces to create a weather-appropriate outfit",
+                                ])
+    
+    piece_rule = np.random.choice([
+                            "mixing textures: incorporating different textures to add visual interest",
+                            "switching styles: mixing casual and formal pieces for a unique look",
+                            "statement piece: building an outfit around a bold statement piece",
+                            "originality: choosing a unique piece that stands out",
+                            "basics: starting with a basic piece and building around it",
+                            "layering: several pieces of clothing on top of each other to add depth", 
+                            "proportion balance: for example, baggy jeans with a skinny top", 
+                            "accessories: adding a statement piece to elevate the outfit",
+                            "dress code: following a specific dress code to create a cohesive look",
+                            "comfort: prioritizing comfort while still looking put together",
+                            "silouhette: creating a visually interesting shape with the outfit",
+                            "jewelry: adding jewelry to elevate the outfit"
+                                   ])
+    # Define the messages for the chat API
+    messages = [
+        {
+            "role": "system",
+            "content": "Follow this rule when suggesting a piece of clothing: " + piece_rule
+        },
+        {
+            "role": "system",
+            "content": "Follow this rule when choosing a color: " + color_rule
+        },
+        {
+            "role": "system",
+            "content": "Return the answer in a JSON object with the next structure: "
+                    "{\"elements\": [{\"element\": \"name of the piece, not too descriptive\", "
+                    "\"color\": \"color of this piece, one word\", "
+                    "\"fit\": \"fit of this piece\", "
+                    "\"price\": \"some number, estimated price of the piece\", "
+                    "\"context\": \"one word from this list : casual, formal, athletic, office-ready, streetwear, fashion, luxury\", "
+                    "\"description\": \"explain why you chose this piece (don't use the word rule)\"}]}"
+        },
+        {
+            "role": "user",
+            "content": "Describe a single clothing piece or accessory following the requirements that fit in my wardrobe, while not already being in it."
+        },
+        {
+            "role": "user",
+            "content": f"Requirements: element: {element['element']}, color: {element['color']}, fit: {element['fit']}, price: {element['price']}, context: {element['context']}, description: {element['description']}."
+        },
+        {
+            "role": "user",
+            "content": f"I have these elements in my wardrobe: {(' '.join(wardrobe['description']))}."
+        }
+    ]
+
+    # Call the Mistral API to complete the chat
+    chat_response = client.chat.complete(
+        model="mistral-large-latest",
         messages=messages,
         response_format={
             "type": "json_object",
